@@ -10,7 +10,7 @@ var angularApp = angular.module('myApp', [
     //'ngMask'
 ]);
 angularApp.run(function ($localStorage) {
-    if (isNotBlank(ACCESS_TOKEN)) {
-        $localStorage.token = ACCESS_TOKEN;
+    if (isNotBlank(window.ACCESS_TOKEN)) {
+        $localStorage.token = window.ACCESS_TOKEN;
     }
 });

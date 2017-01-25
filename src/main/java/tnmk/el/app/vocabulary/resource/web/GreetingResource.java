@@ -1,17 +1,22 @@
 package tnmk.el.app.vocabulary.resource.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import tnmk.common.infrastructure.projectinfo.ProjectInfoProperties;
 
 /**
  * @author khoi.tran on 11/6/16.
  */
 @Controller
 public class GreetingResource {
+    @Autowired
+    private ProjectInfoProperties projectInfoProperties;
+
     @RequestMapping("/greetingPage")
-    public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
+    public String greeting(Model model) {
+        model.addAttribute("projectInfo", projectInfoProperties);
         return "greeting";
     }
 }

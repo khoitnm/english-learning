@@ -62,11 +62,11 @@
         <footer th:include="parts/footer"></footer>
     </div>
 </div>
-<!--"[[${projectInfo.profiles[0]}]]";-->
+<!---->
 <!--"[[${user.accessToken}]]";-->
 <script th:inline="text">
-    var PROFILE = "sample";
-    var ACCESS_TOKEN = "xxx";
+    var PROFILE = "[[${projectInfo.profiles[0]}]]";
+    //    var ACCESS_TOKEN = "xxx";
 </script>
 <div th:include="parts/import-scripts"></div>
 <!-- /page content -->
