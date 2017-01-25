@@ -10,7 +10,7 @@ build.properties
 *.log
 .sonar
 
-*.json
+#*.json
 #
 #target
 #.idea
@@ -374,3 +374,4 @@ build.properties
 #/src/main/resources/static/node_modules/statuses/
 #/src/main/resources/static/node_modules/ee-first/
 #/src/main/resources/static/node_modules/to-array/
+
