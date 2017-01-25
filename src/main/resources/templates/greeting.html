@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>jVectorMap demo</title>
-
-    <link rel="stylesheet" href="libs/jquery-jvectormap/jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
+    <link th:href="@{/libs/jquery-jvectormap/jquery-jvectormap-2.0.3.css}" rel="stylesheet" media="screen"/>
+    <!--<link rel="stylesheet" href="libs/jquery-jvectormap/jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>-->
     <script src="libs/jquery-jvectormap/jquery-2.x-git.min.js"></script>
     <script src="libs/jquery-jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
     <script src="libs/jquery-jvectormap/jquery-jvectormap-world-mill.js"></script>
@@ -17,5 +17,10 @@
         $('#world-map').vectorMap({map: 'world_mill'});
     });
 </script>
+<!--<script th:inline="text">-->
+<!--var PROFILE = "[[${projectInfoProperties.profiles[0]}]]";-->
+<!--var ACCESS_TOKEN = "[[${user.accessToken}]]";-->
+<!--alert(PROFILE);-->
+<!--</script>-->
 </body>
 </html>

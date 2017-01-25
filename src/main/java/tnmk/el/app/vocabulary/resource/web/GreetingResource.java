@@ -1,4 +1,4 @@
-package tnmk.el.resources.web;
+package tnmk.el.app.vocabulary.resource.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

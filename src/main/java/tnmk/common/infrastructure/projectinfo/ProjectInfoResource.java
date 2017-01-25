@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectinfo;
+package tnmk.common.infrastructure.projectinfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

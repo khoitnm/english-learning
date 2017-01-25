@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectinfo;
+package tnmk.common.infrastructure.projectinfo;
 
 import java.io.Serializable;
 

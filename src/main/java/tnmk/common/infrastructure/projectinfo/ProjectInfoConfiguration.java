@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectinfo;
+package tnmk.common.infrastructure.projectinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class ProjectInfoConfiguration {
     @Autowired
     private ProjectInfoService projectInfoService;
 
-    @Bean
+    @Bean(name = "projectInfoProperties")
     public ProjectInfoProperties projectInfoProperties() {
         LOGGER.debug("Load Project Info");
         ProjectInfoProperties projectInfoProperties = projectInfoService.loadProjectInfoProperties();

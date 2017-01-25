@@ -1,8 +1,8 @@
-package tnmk.el.service.historyevent;
+package tnmk.el.app.vocabulary.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import tnmk.el.service.historyevent.model.HistoryEvent;
+import tnmk.el.app.vocabulary.entity.LearningItem;
 
 /**
  * Database for ancient countries:
@@ -19,5 +19,5 @@ import tnmk.el.service.historyevent.model.HistoryEvent;
  * @author khoi.tran on 9/20/16.
  */
 @Repository
-public interface HistoryEventRepository extends MongoRepository<HistoryEvent, String> {
+public interface LearningItemRepository extends MongoRepository<LearningItem, String> {
 }

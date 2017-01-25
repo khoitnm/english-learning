@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectinfo;
+package tnmk.common.infrastructure.projectinfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
-import tnmk.el.infrastructure.projectprofile.ProfileHelper;
+import tnmk.common.infrastructure.projectprofile.ProjectProfileHelper;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -16,10 +16,10 @@ import java.util.Properties;
 public class ProjectInfoService {
     public static final Logger LOGGER = LoggerFactory.getLogger(ProjectInfoService.class);
 
-    private final ProfileHelper profileHelper;
+    private final ProjectProfileHelper profileHelper;
 
     @Autowired
-    public ProjectInfoService(ProfileHelper profileHelper) {this.profileHelper = profileHelper;}
+    public ProjectInfoService(ProjectProfileHelper profileHelper) {this.profileHelper = profileHelper;}
 
     public ProjectInfoProperties loadProjectInfoProperties() {
         String propertiesFile = "/build.properties";

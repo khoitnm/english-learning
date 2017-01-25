@@ -1,6 +1,9 @@
 package tnmk.el.app.vocabulary.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import tnmk.el.app.common.entity.BaseEntity;
 
 import java.time.Instant;
@@ -9,11 +12,14 @@ import java.util.List;
 /**
  * @author khoi.tran on 1/25/17.
  */
+@Document(collection = "Book")
 public class Book extends BaseEntity {
+    @Indexed
     @NotBlank
     private String name;
     private String author;
 
+    @DBRef
     private List<Lesson> lessons;
     private Instant publishDate;
 

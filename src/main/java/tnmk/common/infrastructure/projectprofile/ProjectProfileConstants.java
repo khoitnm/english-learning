@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectprofile;
+package tnmk.common.infrastructure.projectprofile;
 
 /**
  * Created by khoi.tran on 4/21/16.

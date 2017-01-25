@@ -10,7 +10,7 @@ import java.time.Instant;
 public class BaseEntity {
     @Id
     private String id;
-    private Instant createdDateTime;
+    private Instant createdDateTime = Instant.now();
     private Instant updatedDateTime;
 
     public Instant getCreatedDateTime() {

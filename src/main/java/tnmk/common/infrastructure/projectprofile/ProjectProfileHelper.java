@@ -1,4 +1,4 @@
-package tnmk.el.infrastructure.projectprofile;
+package tnmk.common.infrastructure.projectprofile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,14 +7,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProfileHelper {
+public class ProjectProfileHelper {
     public static final String NO_PROFILE = "none";
-    public static final Logger LOGGER = LoggerFactory.getLogger(ProfileHelper.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(ProjectProfileHelper.class);
     @Autowired
     private Environment env;
     private String[] usingProfiles = null;
 
-    public ProfileHelper() {
+    public ProjectProfileHelper() {
 
     }
 

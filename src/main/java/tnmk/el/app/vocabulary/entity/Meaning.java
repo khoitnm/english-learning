@@ -1,6 +1,7 @@
 package tnmk.el.app.vocabulary.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
 
@@ -8,9 +9,10 @@ import java.util.List;
  * @author khoi.tran on 1/25/17.
  */
 public class Meaning {
-    private WordType wordType;
     @NotBlank
     private String explanation;
+    @Indexed
+    private WordType wordType;
     private List<String> example;
 
     public WordType getWordType() {
