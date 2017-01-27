@@ -32,7 +32,7 @@ build.properties
 /src/main/resources/static/node_modules/**/spec
 /src/main/resources/static/node_modules/**/grunt*
 /src/main/resources/static/node_modules/**/less
-/src/main/resources/static/node_modules/**/examples
+/src/main/resources/static/node_modules/**/example*
 /src/main/resources/static/node_modules/**/samples
 /src/main/resources/static/node_modules/**/templates
 /src/main/resources/static/node_modules/**/themes

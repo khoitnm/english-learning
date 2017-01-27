@@ -7,6 +7,8 @@ angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $r
                 $rootScope.globalMessage = "Your session is expired! Please login again.";
             } else if (rejection.status == 401) {
                 $rootScope.globalMessage = "Your session is expired. Please login again!";
+            } else {
+                $rootScope.globalMessage = rejection.data.message;
             }
             return $q.reject(rejection);
         }

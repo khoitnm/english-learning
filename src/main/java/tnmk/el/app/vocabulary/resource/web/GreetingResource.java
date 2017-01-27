@@ -14,7 +14,7 @@ public class GreetingResource {
     @Autowired
     private ProjectInfoProperties projectInfoProperties;
 
-    @RequestMapping("/greetingPage")
+    @RequestMapping("/")
     public String greeting(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
         return "greeting";

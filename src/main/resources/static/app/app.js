@@ -1,4 +1,5 @@
 //'use strict';
+var contextPath = window.location.origin + '/english-learning';
 
 var angularApp = angular.module('myApp', [
     //'ngSanitize',
@@ -6,6 +7,7 @@ var angularApp = angular.module('myApp', [
     //'file-model',
     'ngStorage',
     'ngRoute',
+    'angucomplete-alt',
     //'ui.bootstrap',
     //'ngMask'
 ]);

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tnmk.el.app.common.entity.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,11 +22,11 @@ public class Lesson extends BaseEntity {
 
     @Indexed
     @DBRef
-    private Set<Topic> topics;
+    private Set<Topic> topics = new HashSet<>();
 
     @Indexed
     @DBRef
-    private List<LearningItem> learningItems;
+    private List<ExpressionItem> expressionItems = new ArrayList<>();
 
     @Indexed
     private String bookId;
@@ -37,12 +39,12 @@ public class Lesson extends BaseEntity {
         this.name = name;
     }
 
-    public List<LearningItem> getLearningItems() {
-        return learningItems;
+    public List<ExpressionItem> getExpressionItems() {
+        return expressionItems;
     }
 
-    public void setLearningItems(List<LearningItem> learningItems) {
-        this.learningItems = learningItems;
+    public void setExpressionItems(List<ExpressionItem> expressionItems) {
+        this.expressionItems = expressionItems;
     }
 
     public String getBookId() {
