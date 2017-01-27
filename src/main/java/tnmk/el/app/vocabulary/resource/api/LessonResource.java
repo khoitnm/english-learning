@@ -1,6 +1,7 @@
 package tnmk.el.app.vocabulary.resource.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,17 +16,22 @@ public class LessonResource {
     @Autowired
     private LessonService lessonService;
 
-    @RequestMapping(value = "/lessons", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstant.API_PREFIX + "/lessons", method = RequestMethod.GET)
     public List<Lesson> loadExpressionItems() {
         return lessonService.findAll();
     }
 
-    @RequestMapping(value = "/lessons/initiation", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstant.API_PREFIX + "/lessons/{lessonId}", method = RequestMethod.GET)
+    public Lesson findLesson(@PathVariable String lessonId) {
+        return lessonService.findById(lessonId);
+    }
+
+    @RequestMapping(value = ApiConstant.API_PREFIX + "/lessons/initiation", method = RequestMethod.GET)
     public Lesson init() {
         return new Lesson();
     }
 
-    @RequestMapping(value = "/lessons", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstant.API_PREFIX + "/lessons", method = RequestMethod.POST)
     public Lesson save(@RequestBody Lesson lesson) {
         return lessonService.addLesson(lesson);
     }

@@ -15,7 +15,12 @@ public class GreetingResource {
     private ProjectInfoProperties projectInfoProperties;
 
     @RequestMapping("/")
-    public String greeting(Model model) {
+    public String defaultPage(Model model) {
+        return greetingPage(model);
+    }
+
+    @RequestMapping("/greetingPage")
+    public String greetingPage(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
         return "greeting";
     }

@@ -50,4 +50,8 @@ public class LessonService {
 
         return lessonRepository.save(lesson);
     }
+
+    public Lesson findById(String lessonId) {
+        return lessonRepository.findOne(lessonId);
+    }
 }

@@ -6,13 +6,29 @@ angularApp.config(routeConfig);
 function routeConfig($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'app/expression-item/expression-item-edit.html',
+            templateUrl: 'app/expression-item/expression-items.html',
             controller: 'angularController',
-            activeTab: 'expression-item-edit'
+            //activeTab: 'expression-item-edit'
         })
-        .otherwise({
-            redirectTo: '/expression-item-edit'
-        });
+        .when('/expression-items', {
+            templateUrl: 'app/expression-item/expression-items.html',
+            controller: 'lessonsController',
+            //activeTab: 'expression-items'
+        })
+        .when('/expression-item-edit', {
+            templateUrl: 'app/expression-item/expression-item-edit.html',
+            controller: 'lessonEditController',
+            //activeTab: 'expression-item-edit'
+        })
+        .when('/expression-item-test', {
+            templateUrl: 'app/expression-item/expression-item-test.html',
+            controller: 'lessonTestController',
+            //activeTab: 'expression-item-test'
+        })
+        //.otherwise({
+        //    redirectTo: '/expression-item-edit'
+        //})
+    ;
 
 }
 //

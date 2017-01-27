@@ -1,12 +1,13 @@
 package tnmk.el.app.vocabulary.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tnmk.el.app.common.entity.BaseEntity;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,12 +25,18 @@ public class Lesson extends BaseEntity {
     @DBRef
     private Set<Topic> topics = new HashSet<>();
 
+    @NotEmpty
     @Indexed
     @DBRef
-    private List<ExpressionItem> expressionItems = new ArrayList<>();
+    private List<ExpressionItem> expressionItems;
 
     @Indexed
     private String bookId;
+
+    public Lesson() {
+        //This list must contains at least one item.
+        expressionItems = Arrays.asList(new ExpressionItem());
+    }
 
     public String getName() {
         return name;

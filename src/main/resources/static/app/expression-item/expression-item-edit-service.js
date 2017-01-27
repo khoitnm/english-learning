@@ -1,7 +1,8 @@
-var LessonService = function ($http, $q, $window) {
+var LessonEditService = function ($http, $q, $routeParams) {
     this.$http = $http;
     this.$q = $q;
-    this.$window = $window;
+    this.$routeParams = $routeParams;
+
     this.lessonInit = undefined;
     this.expressionItemInit = undefined;
     this.meaningInit = undefined;
@@ -14,33 +15,38 @@ var LessonService = function ($http, $q, $window) {
         new WordType("adv", "ADV"),
         new WordType("prep", "PREPOSITION"),
     ];
-    //this.wordTypes = ["n", "v", "adj", "adv", "preposition"];
-    this.init();
 };
-
-LessonService.prototype.init = function () {
+LessonEditService.prototype.init = function () {
     var self = this;
-    var lessonInitGet = self.$http.get(contextPath + '/lessons/initiation');
-    var expressionItemInitGet = self.$http.get(contextPath + '/expression-items/initiation');
-    var meaningInitGet = self.$http.get(contextPath + '/expression-items/meanings/initiation');
+    var lessonInitGet = self.$http.get(contextPath + '/api/lessons/initiation');
+    var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation');
+    var meaningInitGet = self.$http.get(contextPath + '/api/expression-items/meanings/initiation');
     self.$q.all([lessonInitGet, expressionItemInitGet, meaningInitGet]).then(function (arrayOfResults) {
         self.lessonInit = arrayOfResults[0].data;
         self.expressionItemInit = arrayOfResults[1].data;
         self.meaningInit = arrayOfResults[2].data;
-        self.lesson = angular.copy(self.lessonInit);
+
+        var lessonId = self.$routeParams.lessonId;
+        if (!hasValue(lessonId)) {
+            self.lesson = angular.copy(self.lessonInit);
+        } else {
+            self.$http.get(contextPath + "/api/lessons/" + lessonId).then(function (successResponse) {
+                self.lesson = successResponse.data;
+            });
+        }
     });
 };
-LessonService.prototype.addTopic = function () {
+LessonEditService.prototype.addTopic = function () {
     var self = this;
     self.lesson.topics.push({});
 };
-LessonService.prototype.addExpressionItem = function () {
+LessonEditService.prototype.addExpressionItem = function () {
     var self = this;
 
     var expressionItem = angular.copy(self.expressionItemInit);
     self.lesson.expressionItems.push(expressionItem);
 };
-LessonService.prototype.addExpressionItemIfNecessary = function (expressionItem) {
+LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionItem) {
     var self = this;
     var expression = expressionItem.expression;
     if (hasValue(expression)) {
@@ -51,12 +57,12 @@ LessonService.prototype.addExpressionItemIfNecessary = function (expressionItem)
         }
     }
 };
-LessonService.prototype.addExpressionMeaning = function (expressionItem) {
+LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
     var self = this;
     var meaning = angular.copy(self.meaningInit);
     expressionItem.meanings.push(meaning);
 };
-LessonService.prototype.addExpressionMeaningIfNecessary = function (expressionItem, meaning) {
+LessonEditService.prototype.addExpressionMeaningIfNecessary = function (expressionItem, meaning) {
     var self = this;
     if (hasValue(meaning.explanation)) {
         //If changing data of the last item, then add new blank item.
@@ -66,7 +72,7 @@ LessonService.prototype.addExpressionMeaningIfNecessary = function (expressionIt
         }
     }
 };
-LessonService.prototype.changeExpressionMeaning = function ($event, expressionItem, meaning) {
+LessonEditService.prototype.changeExpressionMeaning = function ($event, expressionItem, meaning) {
     var self = this;
     var explanation = meaning.explanation;
 
@@ -78,15 +84,25 @@ LessonService.prototype.changeExpressionMeaning = function ($event, expressionIt
     }
     self.addExpressionMeaningIfNecessary(expressionItem, meaning);
 };
-LessonService.prototype.saveLesson = function () {
+LessonEditService.prototype.addMeaningExampleIfNecessary = function (meaning, example, $index) {
     var self = this;
-    self.$http.post(contextPath + '/lessons', self.lesson).then(
+    if (hasValue(example)) {
+        //If changing data of the last item, then add new blank item.
+        //var index = meaning.examples.indexOf(example);
+        if ($index == meaning.examples.length - 1) {
+            meaning.examples.push("");
+        }
+    }
+};
+LessonEditService.prototype.saveLesson = function () {
+    var self = this;
+    self.$http.post(contextPath + '/api/lessons', self.lesson).then(
         function (successResponse) {
             self.lesson = successResponse.data;
         }
     );
 };
-LessonService.prototype.selectWordType = function ($item) {
+LessonEditService.prototype.selectWordType = function ($item) {
     var self = this;
     var meaning = this.$parent.meaning;
     var selectedWordType = meaning.wordTypeObject;
@@ -98,7 +114,7 @@ LessonService.prototype.selectWordType = function ($item) {
     console.log(meaning.wordType);
 };
 
-LessonService.prototype.showErrorMessage = function (msg) {
+LessonEditService.prototype.showErrorMessage = function (msg) {
     var self = this;
     self.infoMessage = null;
     self.successMessage = null;
@@ -110,3 +126,9 @@ var WordType = function (label, value) {
     this.label = label;
     this.value = value;
 };
+
+angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEditService]);
+angularApp.controller('lessonEditController', ['$scope', '$http', '$q', '$routeParams', 'lessonEditService', function ($scope, $http, $q, $routeParams, lessonEditService) {
+    $scope.lessonEditService = lessonEditService;
+    lessonEditService.init();
+}]);

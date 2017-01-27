@@ -3,6 +3,7 @@ package tnmk.el.app.vocabulary.entity;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,7 +14,11 @@ public class Meaning {
     private String explanation;
     @Indexed
     private WordType wordType;
-    private List<String> example;
+    private List<String> examples;
+
+    public Meaning() {
+        examples = Arrays.asList("");//Add an empty element.
+    }
 
     public WordType getWordType() {
         return wordType;
@@ -31,11 +36,11 @@ public class Meaning {
         this.explanation = explanation;
     }
 
-    public List<String> getExample() {
-        return example;
+    public List<String> getExamples() {
+        return examples;
     }
 
-    public void setExample(List<String> example) {
-        this.example = example;
+    public void setExamples(List<String> examples) {
+        this.examples = examples;
     }
 }
