@@ -32,7 +32,13 @@ public class LessonService {
         return lessonRepository.findAll();
     }
 
-    public Lesson addLesson(Lesson lesson) {
+    /**
+     * TODO there will be some garbage expression or topics
+     *
+     * @param lesson
+     * @return
+     */
+    public Lesson saveLesson(Lesson lesson) {
         lesson.setName(StringUtils.trim(lesson.getName()));
 
         Set<Topic> topics = lesson.getTopics();

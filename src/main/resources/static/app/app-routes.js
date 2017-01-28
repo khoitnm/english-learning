@@ -7,7 +7,7 @@ function routeConfig($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'app/expression-item/expression-items.html',
-            controller: 'angularController',
+            controller: 'lessonsController',
             //activeTab: 'expression-item-edit'
         })
         .when('/expression-items', {

@@ -108,6 +108,7 @@
                             <td class="col-word">
                                 <input type="text" ng-model="expressionItem.expression"
                                        ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
+                                       ng-focus="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input"/>
                             </td>
                             <td>
@@ -132,6 +133,7 @@
                                                       rows="{{meaning.explanationLinesLength || 1}}"
                                                       ng-model="meaning.explanation"
                                                       ng-change="lessonEditService.changeExpressionMeaning(this,expressionItem, meaning)"
+                                                      ng-focus="lessonEditService.changeExpressionMeaning(this,expressionItem, meaning)"
                                                       ng-trim="true"
                                                       placeholder="explanation {{$index + 1}}"></textarea>
                                             <table style="width: 100%">
@@ -142,6 +144,7 @@
                                                                   rows="2"
                                                                   ng-model="meaning.examples[$index]"
                                                                   ng-change="lessonEditService.addMeaningExampleIfNecessary(meaning, example,$index)"
+                                                                  ng-focus="lessonEditService.addMeaningExampleIfNecessary(meaning, example,$index)"
                                                                   placeholder="example"></textarea>
                                                     </td>
                                                 </tr>

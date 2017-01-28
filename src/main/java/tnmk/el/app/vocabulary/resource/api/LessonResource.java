@@ -33,6 +33,6 @@ public class LessonResource {
 
     @RequestMapping(value = ApiConstant.API_PREFIX + "/lessons", method = RequestMethod.POST)
     public Lesson save(@RequestBody Lesson lesson) {
-        return lessonService.addLesson(lesson);
+        return lessonService.saveLesson(lesson);
     }
 }

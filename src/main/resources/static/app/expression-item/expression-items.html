@@ -41,7 +41,11 @@
                                 <a href="#!/expression-item-edit?lessonId={{lesson.id}}">{{$index}}</a>
                             </td>
                             <td>
-                                <label>{{lesson.name}}</label>
+                                <label>
+                                    <a href="#!/expression-item-edit?lessonId={{lesson.id}}">
+                                        {{lesson.name}}
+                                    </a>
+                                </label>
                             </td>
                             <td>
                                 {{lesson.createdDateTime * 1000 | date:'yyyy-MM-dd hh:mm:ss'}}

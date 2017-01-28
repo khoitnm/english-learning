@@ -272,6 +272,9 @@ function isNotEmpty(variable) {
 function isNotBlank(variable) {
     return isNotEmpty(variable) || (isString(variable) && isNotEmpty(variable.trim()));
 }
+function isBlank(variable) {
+    return !isNotBlank(variable);
+}
 function isUndefined(value) {
     return typeof value == 'undefined';
 }

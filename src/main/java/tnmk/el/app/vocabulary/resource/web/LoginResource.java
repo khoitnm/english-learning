@@ -10,18 +10,18 @@ import tnmk.common.infrastructure.projectinfo.ProjectInfoProperties;
  * @author khoi.tran on 11/6/16.
  */
 @Controller
-public class GreetingResource {
+public class LoginResource {
     @Autowired
     private ProjectInfoProperties projectInfoProperties;
 
     @RequestMapping("/")
     public String defaultPage(Model model) {
-        return greetingPage(model);
+        return loginPage(model);
     }
 
-    @RequestMapping("/greetingPage")
-    public String greetingPage(Model model) {
+    @RequestMapping("/loginPage")
+    public String loginPage(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
-        return "greeting";
+        return "login";
     }
 }
