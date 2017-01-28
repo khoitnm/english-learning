@@ -19,7 +19,7 @@ public class MainResource {
 //        return greetingPage(model);
 //    }
 
-    @RequestMapping("/mainPage")
+    @RequestMapping("/main")
     public String greetingPage(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
         return "main";

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Gentallela Alela! | </title>
 
@@ -14,10 +14,10 @@
     <!-- Font Awesome -->
     <link href="node_modules/gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Animate.css -->
-    <link href="https://colorlib.com/polygon/gentelella/css/animate.min.css" rel="stylesheet">
+    <!--<link href="https://colorlib.com/polygon/gentelella/css/animate.min.css" rel="stylesheet"/>-->
 
     <!-- Custom Theme Style -->
-    <link href="node_modules/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <link href="node_modules/gentelella/build/css/custom.min.css" rel="stylesheet"/>
 </head>
 
 <body class="login">
@@ -28,18 +28,26 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <form>
+                <div th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+                <div th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+                <form th:action="@{/login}" method="post">
                     <h1>Login Form</h1>
 
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required=""/>
+                        <input type="text" name="username" class="form-control" placeholder="Username" required=""/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required=""/>
+                        <input type="password" name="password" class="form-control" placeholder="Password" required=""/>
                     </div>
+
                     <div>
-                        <a class="btn btn-default submit" href="index.html">Log in</a>
-                        <a class="reset_pass" href="#">Lost your password?</a>
+                        <input type="submit" value="Log In" class="btn btn-default submit"/>
+                        <!--<a class="btn btn-default submit" href="index.html">Log in</a>-->
+                        <!--<a class="reset_pass" href="#">Lost your password?</a>-->
                     </div>
 
                     <div class="clearfix"></div>

@@ -19,7 +19,7 @@ public class LoginResource {
         return loginPage(model);
     }
 
-    @RequestMapping("/loginPage")
+    @RequestMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
         return "login";
