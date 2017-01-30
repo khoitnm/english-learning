@@ -10,7 +10,7 @@ import tnmk.el.app.common.entity.BaseEntity;
  */
 @Document(collection = "Topic")
 public class Topic extends BaseEntity {
-    @Indexed
+    @Indexed(unique = true)
     @NotBlank
     private String name;
 

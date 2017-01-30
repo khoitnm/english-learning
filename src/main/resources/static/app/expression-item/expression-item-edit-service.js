@@ -65,6 +65,13 @@ LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
     var meaning = angular.copy(self.meaningInit);
     expressionItem.meanings.push(meaning);
 };
+LessonEditService.prototype.focusExpressionItem = function (expressionItem) {
+    var self = this;
+    if (expressionItem.meanings.length == 0) {
+        self.addExpressionMeaning(expressionItem);
+    }
+    self.addExpressionItemIfNecessary(expressionItem);
+};
 LessonEditService.prototype.addExpressionMeaningIfNecessary = function (expressionItem, meaning) {
     var self = this;
     if (hasValue(meaning.explanation)) {
@@ -147,6 +154,7 @@ LessonEditService.prototype.cleanExpressionItems = function (expressionItems) {
 };
 LessonEditService.prototype.cleanMeanings = function (meanings) {
     var self = this;
+
     for (var i = meanings.length - 1; i >= 0; i--) {
         var meaning = meanings[i];
         self.cleanMeaningExamples(meaning.examples);
@@ -157,6 +165,7 @@ LessonEditService.prototype.cleanMeanings = function (meanings) {
 };
 LessonEditService.prototype.cleanMeaningExamples = function (examples) {
     var self = this;
+
     for (var i = examples.length - 1; i >= 0; i--) {
         var example = examples[i];
         if (isBlank(example)) {

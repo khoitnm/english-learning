@@ -52,11 +52,22 @@ public class LessonService {
         lesson.setTopics(topics);
         topicRepository.save(topics);
 
+        //Save lesson first to generate the lessonId, so that we can set that id into expressionItems.
+        if (StringUtils.isBlank(lesson.getId())) {
+            lessonRepository.save(lesson);
+        }
         List<ExpressionItem> expressionItems = lesson.getExpressionItems();
+        for (ExpressionItem expressionItem : expressionItems) {
+            expressionItem.addBookId(lesson.getBookId());
+            expressionItem.addLessonId(lesson.getId());
+            Set<String> topicIds = lesson.getTopics().stream().map(topic -> topic.getId()).collect(Collectors.toSet());
+            expressionItem.addTopicIds(topicIds);
+        }
         expressionItems = expressionItems.stream().filter(expressionItem -> StringUtils.isNotBlank(expressionItem.getExpression())).collect(Collectors.toList());
         lesson.setExpressionItems(expressionItems);
         expressionItemRepository.save(expressionItems);
 
+        //Save again to store related expressionItem (with generated ids) inside the lesson.
         return lessonRepository.save(lesson);
     }
 

@@ -108,7 +108,7 @@
                             <td class="col-word">
                                 <input type="text" ng-model="expressionItem.expression"
                                        ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
-                                       ng-focus="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
+                                       ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input"/>
                             </td>
                             <td>

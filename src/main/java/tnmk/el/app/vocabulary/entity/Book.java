@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Document(collection = "Book")
 public class Book extends BaseEntity {
-    @Indexed
+    @Indexed(unique = true)
     @NotBlank
     private String name;
     private String author;
