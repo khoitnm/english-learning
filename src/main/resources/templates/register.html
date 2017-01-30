@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Gentallela Alela! | </title>
-
+    <link rel="shortcut icon" type="image/png" th:href="@{/favicons/442272.png}"/>
     <!-- Bootstrap -->
     <link th:href="@{/node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet"/>
     <!-- Font Awesome -->
@@ -30,11 +30,14 @@
     <div class="login_wrapper">
         <div id="register" class="animate form registration_form">
             <section class="login_content">
-                <div class="alert alert-error" role="alert" ng-show="registerService.message">
-                    <span class="fa fa-exclamation" aria-hidden="true">{{registerService.message}}</span>
-                </div>
+
                 <form>
                     <h1>Create Account</h1>
+
+                    <div ng-show="userMessage" class="text-danger">
+                        <i class="fa fa-exclamation"></i> {{userMessage}}
+                    </div>
+                    <br/>
 
                     <div>
                         <input type="text" class="form-control" placeholder="Username" required="" ng-model="registerService.user.username"/>

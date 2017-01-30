@@ -16,6 +16,8 @@ angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $r
                 $rootScope.globalMessage = "Your session is expired! Please login again.";
             } else if (rejection.status == 401) {
                 $rootScope.globalMessage = "Your session is expired. Please login again!";
+            } else if (rejection.status == 500) {
+                $rootScope.userMessage = rejection.data.userMessage;
             } else {
                 $rootScope.globalMessage = rejection.data.userMessage;
             }
@@ -27,9 +29,9 @@ angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $r
 angularApp.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('errorHttpInterceptor');
 }]);
-//
-//angular.module('exceptionOverwrite', []).factory('$exceptionHandler', ['$rootScope', function ($rootScope) {
-//    return function myExceptionHandler(exception, cause) {
-//        $rootScope.globalMessage = exception;
-//    };
-//}]);
+
+angular.module('exceptionOverwrite', []).factory('$exceptionHandler', ['$rootScope', function ($rootScope) {
+    return function myExceptionHandler(exception, cause) {
+        $rootScope.globalMessage = exception;
+    };
+}]);

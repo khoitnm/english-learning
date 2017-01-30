@@ -1,15 +1,18 @@
 package tnmk.el.app.vocabulary.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
 import tnmk.el.app.vocabulary.entity.Lesson;
+import tnmk.el.app.vocabulary.entity.LessonIntroduction;
 import tnmk.el.app.vocabulary.entity.Topic;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
 import tnmk.el.app.vocabulary.repository.LessonRepository;
 import tnmk.el.app.vocabulary.repository.TopicRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,5 +62,16 @@ public class LessonService {
 
     public Lesson findById(String lessonId) {
         return lessonRepository.findOne(lessonId);
+    }
+
+    public List<LessonIntroduction> findAllIntroductions() {
+        List<Lesson> lessons = lessonRepository.findAllIntroductions();
+        List<LessonIntroduction> result = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            LessonIntroduction lessonIntroduction = new LessonIntroduction();
+            BeanUtils.copyProperties(lesson, lessonIntroduction);
+            result.add(lessonIntroduction);
+        }
+        return result;
     }
 }

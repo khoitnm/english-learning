@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Gentallela Alela! | </title>
-
+    <link rel="shortcut icon" type="image/png" th:href="@{/favicons/442272.png}"/>
     <!-- Bootstrap -->
     <link th:href="@{/node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet"/>
     <!-- Font Awesome -->
@@ -25,14 +25,17 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <div th:if="${param.error}">
-                    Invalid username and password.
-                </div>
-                <div th:if="${param.logout}">
-                    You have been logged out.
-                </div>
+
                 <form th:action="@{/web/login}" method="post">
                     <h1>Login Form</h1>
+
+                    <div th:if="${param.error}" class="text-danger">
+                        Invalid username and password.
+                    </div>
+                    <div th:if="${param.logout}" class="text-warning">
+                        You have been logged out.
+                    </div>
+                    <br/>
 
                     <div>
                         <input type="text" name="username" class="form-control" placeholder="Username" required=""/>
@@ -42,7 +45,7 @@
                     </div>
 
                     <div>
-                        <input type="submit" value="Log In" class="btn btn-default submit"/>
+                        <input type="submit" value="Log In" class="btn btn-default submit" style="float: none; margin: 0px;"/>
                         <!--<a class="btn btn-default submit" href="index.html">Log in</a>-->
                         <!--<a class="reset_pass" href="#">Lost your password?</a>-->
                     </div>

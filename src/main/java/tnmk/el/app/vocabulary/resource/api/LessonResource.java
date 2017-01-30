@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.el.app.vocabulary.entity.Lesson;
+import tnmk.el.app.vocabulary.entity.LessonIntroduction;
 import tnmk.el.app.vocabulary.service.LessonService;
 
 import java.util.List;
@@ -18,8 +19,13 @@ public class LessonResource {
     private LessonService lessonService;
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/lessons", method = RequestMethod.GET)
-    public List<Lesson> loadExpressionItems() {
+    public List<Lesson> loadLessons() {
         return lessonService.findAll();
+    }
+
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/lessons/introductions", method = RequestMethod.GET)
+    public List<LessonIntroduction> loadLessonIntroductions() {
+        return lessonService.findAllIntroductions();
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/lessons/{lessonId}", method = RequestMethod.GET)

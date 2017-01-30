@@ -38,7 +38,11 @@
                         <tbody>
                         <tr ng-repeat="lesson in lessonsService.lessons">
                             <td>
-                                <a href="#!/expression-item-edit?lessonId={{lesson.id}}">{{$index}}</a>
+                                {{$index}}
+
+                                <a href="#!/expression-item-edit?lessonId={{lesson.id}}"><i class="fa fa-edit"></i></a>
+
+                                <a href="#!/expression-item-test?lessonId={{lesson.id}}"><i class="fa fa-tasks"></i></a>
                             </td>
                             <td>
                                 <label>

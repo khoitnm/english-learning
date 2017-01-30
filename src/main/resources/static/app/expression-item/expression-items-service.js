@@ -8,7 +8,7 @@ var LessonsService = function ($http, $q) {
 
 LessonsService.prototype.init = function () {
     var self = this;
-    var lessonsGet = self.$http.get(contextPath + '/api/lessons');
+    var lessonsGet = self.$http.get(contextPath + '/api/lessons/introductions');
     self.$q.all([lessonsGet]).then(function (arrayOfResults) {
         self.lessons = arrayOfResults[0].data;
     });

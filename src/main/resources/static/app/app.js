@@ -2,7 +2,7 @@
 var contextPath = window.location.origin + '/english-learning';
 
 var angularApp = angular.module('myApp', [
-    //'ngSanitize',
+    'ngSanitize',
     'ngResource',
     //'file-model',
     'ngStorage',
