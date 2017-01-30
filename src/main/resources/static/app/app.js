@@ -8,6 +8,7 @@ var angularApp = angular.module('myApp', [
     'ngStorage',
     'ngRoute',
     'angucomplete-alt',
+    'ngCookies',
     //'ui.bootstrap',
     //'ngMask'
 ]);

@@ -1,0 +1,169 @@
+<style>
+    .table-input-as-text {
+        width: 100%;
+    }
+
+    .table-input-as-text > tbody > tr > td {
+        padding: 0px;
+    }
+
+    .table-input-as-text td {
+        vertical-align: top;
+    }
+
+    .table-input-as-text input, .table-input-as-text textarea {
+        width: 100%;
+        color: rgb(115, 135, 156);
+        font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+        font-size: 13px;
+        box-shadow: none;
+    }
+
+    .table-input-as-text ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: #ECF0F1;
+        font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+        font-size: 13px;
+        font-style: italic;
+        font-weight: lighter;
+    }
+
+    .table-input-as-text input:not(:focus), .table-input-as-text textarea:not(:focus) {
+        padding: 1px 1px 0px 0px; /* Top-Right-Bottom-Left: The bottom has border, so it doesn't need padding anymore*/
+        border-width: 0px 0px 1px 1px;
+        border-style: dotted;
+        border-color: #ECF0F1 #ECF0F1 #F1F1F1 #F7F7F7;
+    }
+
+    .table-input-as-text input:focus, .table-input-as-text textarea:focus {
+        padding: 1px 0px 0px 0px; /* The bottom has border, so it doesn't need padding anymore*/
+        border-width: 0px 1px 1px 1px;
+        border-style: solid;
+        border-color: rgb(238, 238, 238);
+    }
+
+    .table-input-as-text .angucomplete-dropdown {
+        background-color: #fcf8e3;
+    }
+
+    .expressionItem {
+        border-bottom: 1px solid #D1D1D1;
+    }
+
+    .angucomplete-dropdown .highlight {
+        color: #00AA88;
+    }
+
+    .col-word {
+        width: 30%;
+        font-weight: bolder;
+    }
+
+    .example {
+        color: rgb(205, 210, 220);
+        font-style: italic;
+        font-weight: lighter;
+    }
+
+    .example.active-meaning {
+        color: rgb(195, 200, 210);
+        font-weight: normal;
+    }
+
+    .example.active-example {
+        color: rgb(115, 135, 156);
+        font-weight: normal;
+    }
+</style>
+<div class="page-title">
+    <div class="title_left">
+        <h3><input type="text" placeholder="Lesson" ng-model="lessonTestService.lesson.name"/>
+            <small>Editing</small>
+        </h3>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Topic -->
+        <div class="x_panel">
+            <div class="x_title">
+                <h2 ng-repeat="topic in lessonTestService.lesson.topics">
+                    <input type="text" placeholder="Topic" ng-model="topic.name"/>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="close-link"><i class="fa fa-plus" ng-click="lessonTestService.addTopic()"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <!-- Expression Items Table -->
+                <div class="table-responsive">
+                    <!--<button ng-click="lessonTestService.addExpressionItem()">Add expression item</button>-->
+                    <table class="table-input-as-text">
+                        <tr class="expressionItem" ng-repeat="expressionItem in lessonTestService.lesson.expressionItems">
+                            <td style="width: 20px">{{$index + 1}}</td>
+                            <td class="col-word">
+                                <input type="text" ng-model="expressionItem.expression"
+                                       ng-change="lessonTestService.addExpressionItemIfNecessary(expressionItem)"
+                                       ng-focus="lessonTestService.addExpressionItemIfNecessary(expressionItem)"
+                                       placeholder="expression {{$index + 1}}" class="cell-input"/>
+                            </td>
+                            <td>
+                                <table width="100%">
+                                    <tr ng-repeat="meaning in expressionItem.meanings">
+                                        <td style="width: 60px;">
+                                            <!--<input type="text" ng-model="meaning.wordType" ng-change="lessonTestService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>-->
+                                            <angucomplete-alt
+                                                    placeholder="type"
+                                                    pause="100"
+                                                    selected-object="meaning.wordTypeObject"
+                                                    local-data="lessonTestService.wordTypes"
+                                                    search-fields="label"
+                                                    title-field="label"
+                                                    input-changed="lessonTestService.selectWordType"
+                                                    minlength="1"
+                                                    match-class="highlight"/>
+                                        </td>
+                                        <td>
+                                            <!--<input type="text" ng-model="meaning.explanation" ng-change="lessonTestService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>-->
+                                            <textarea class="form-control"
+                                                      rows="{{meaning.explanationLinesLength || 1}}"
+                                                      ng-model="meaning.explanation"
+                                                      ng-change="lessonTestService.changeExpressionMeaning(this,expressionItem, meaning)"
+                                                      ng-focus="lessonTestService.changeExpressionMeaning(this,expressionItem, meaning)"
+                                                      ng-trim="true"
+                                                      placeholder="explanation {{$index + 1}}"></textarea>
+                                            <table style="width: 100%">
+                                                <tr ng-repeat="example in meaning.examples  track by $index">
+                                                    <td style="width: 35px"><label class="example {{meaning.explanation? 'active-meaning': 'inactive-meaning'}}  {{example? 'active-example': 'inactive-example'}}" ng-show="$index == 0">e.g. </label></td>
+                                                    <td>
+                                                        <textarea class="form-control"
+                                                                  rows="2"
+                                                                  ng-model="meaning.examples[$index]"
+                                                                  ng-change="lessonTestService.addMeaningExampleIfNecessary(meaning, example,$index)"
+                                                                  ng-focus="lessonTestService.addMeaningExampleIfNecessary(meaning, example,$index)"
+                                                                  placeholder="example"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ln_solid"></div>
+                <!--Save button-->
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <button type="submit" class="btn btn-success" ng-click="lessonTestService.saveLesson()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -27,9 +27,9 @@ angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $r
 angularApp.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('errorHttpInterceptor');
 }]);
-
-angularApp.module('exceptionOverwrite', []).factory('$exceptionHandler', ['$rootScope', function ($rootScope) {
-    return function myExceptionHandler(exception, cause) {
-        $rootScope.globalMessage = exception;
-    };
-}]);
+//
+//angular.module('exceptionOverwrite', []).factory('$exceptionHandler', ['$rootScope', function ($rootScope) {
+//    return function myExceptionHandler(exception, cause) {
+//        $rootScope.globalMessage = exception;
+//    };
+//}]);

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
 import tnmk.el.app.vocabulary.entity.Meaning;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
@@ -16,22 +17,22 @@ public class ExpressionItemResource {
     @Autowired
     private ExpressionItemRepository expressionItemRepository;
 
-    @RequestMapping(value = ApiConstant.API_PREFIX + "/expression-items/initiation", method = RequestMethod.GET)
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/initiation", method = RequestMethod.GET)
     public ExpressionItem initExpressionItem() {
         return new ExpressionItem();
     }
 
-    @RequestMapping(value = ApiConstant.API_PREFIX + "/expression-items/meanings/initiation", method = RequestMethod.GET)
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/meanings/initiation", method = RequestMethod.GET)
     public Meaning initMeaning() {
         return new Meaning();
     }
 
-    @RequestMapping(value = ApiConstant.API_PREFIX + "/expression-items", method = RequestMethod.GET)
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items", method = RequestMethod.GET)
     public List<ExpressionItem> loadExpressionItems() {
         return expressionItemRepository.findAll();
     }
 
-    @RequestMapping(value = ApiConstant.API_PREFIX + "/expression-items", method = RequestMethod.POST)
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items", method = RequestMethod.POST)
     public ExpressionItem save(@RequestBody ExpressionItem learningItem) {
         return expressionItemRepository.save(learningItem);
     }

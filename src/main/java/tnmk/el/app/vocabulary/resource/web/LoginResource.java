@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tnmk.common.infrastructure.projectinfo.ProjectInfoProperties;
+import tnmk.el.app.common.entity.UriPrefixConstants;
 
 /**
  * @author khoi.tran on 11/6/16.
@@ -14,12 +15,12 @@ public class LoginResource {
     @Autowired
     private ProjectInfoProperties projectInfoProperties;
 
-    @RequestMapping("/")
-    public String defaultPage(Model model) {
-        return loginPage(model);
-    }
+//    @RequestMapping("/")
+//    public String defaultPage(Model model) {
+//        return loginPage(model);
+//    }
 
-    @RequestMapping("/login")
+    @RequestMapping({ "/", UriPrefixConstants.WEB_PREFIX + "/login" })
     public String loginPage(Model model) {
         model.addAttribute("projectInfo", projectInfoProperties);
         return "login";

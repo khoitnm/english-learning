@@ -6,30 +6,25 @@ angularApp.config(routeConfig);
 function routeConfig($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'app/expression-item/expression-items.html',
-            controller: 'lessonsController',
-            //activeTab: 'expression-item-edit'
+            templateUrl: contextPath + '/app/expression-item/expression-items.html',
+            controller: 'lessonsController'
         })
         .when('/expression-items', {
-            templateUrl: 'app/expression-item/expression-items.html',
-            controller: 'lessonsController',
-            //activeTab: 'expression-items'
+            templateUrl: contextPath + '/app/expression-item/expression-items.html',
+            controller: 'lessonsController'
         })
         .when('/expression-item-edit', {
-            templateUrl: 'app/expression-item/expression-item-edit.html',
-            controller: 'lessonEditController',
-            //activeTab: 'expression-item-edit'
+            templateUrl: contextPath + '/app/expression-item/expression-item-edit.html',
+            controller: 'lessonEditController'
         })
         .when('/expression-item-test', {
-            templateUrl: 'app/expression-item/expression-item-test.html',
-            controller: 'lessonTestController',
-            //activeTab: 'expression-item-test'
+            templateUrl: contextPath + '/app/expression-item/expression-item-test.html',
+            controller: 'lessonTestController'
         })
         //.otherwise({
         //    redirectTo: '/expression-item-edit'
         //})
     ;
-
 }
 //
 //function runFn($rootScope, $location, $templateCache, AuthService) {
