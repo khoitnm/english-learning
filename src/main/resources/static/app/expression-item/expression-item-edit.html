@@ -3,37 +3,36 @@
         padding: 0px;
     }
 </style>
-<div class="page-title">
-    <div class="title_left">
-        <h3>
-            Lesson Editing
-            <!--<small>Editing</small>-->
-        </h3>
-    </div>
-</div>
-<div class="clearfix"></div>
-<div class="ln_solid"></div>
+<!--<div class="page-title">-->
+<!--<div class="title_left">-->
+<!--<h3>-->
+<!--Lesson Editing-->
+<!--</h3>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="clearfix"></div>-->
+<!--<div class="ln_solid"></div>-->
 <div class="row">
     <div class="col-md-2">
         <a href='' title=''
            dropdown-menu="lessonEditService.menu.items"
            dropdown-model="lessonEditService.menu.selectedItem"
            dropdown-item-label="text">
-            <i class="fa fa-file"></i> Recent Lessons
+            <i class="fa fa-folder-open"></i> Recent Lessons
         </a>
     </div>
     <div class="col-md-2">
         <a href="#!/expression-item-test?lessonId={{lessonEditService.lesson.id}}"><i class="fa fa-tasks"></i> Test this Lesson</a>
     </div>
 </div>
-<div class="ln_solid"></div>
+<div class="ln_solid" style="margin: 10px 0px;"></div>
 <div class="row">
     <div class="col-md-12">
         <!-- Topic -->
         <div class="x_panel">
             <div class="x_title">
-                <h2>
-                    <label>Lesson</label> <input type="text" placeholder="Lesson" ng-model="lessonEditService.lesson.name"/>
+                <h2 style="width: 100%">
+                    <input ng-model="lessonEditService.lesson.name" type="text" placeholder="Lesson" class="input-as-text"/>
                 </h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <!--<li>-->
@@ -60,9 +59,10 @@
             <div class="x_content">
                 <div class="row">
                     <div class="col-lg-11">
-                        <div class="col-md-2" ng-repeat="topic in lessonEditService.lesson.topics">
-                            <input type="text" placeholder="Topic" ng-model="topic.name"/>
-                        </div>
+                        <input type="text"
+                               ng-repeat="topic in lessonEditService.lesson.topics"
+                               ng-model="topic.name"
+                               placeholder="Topic"/>
                     </div>
                     <div class="col-lg-1">
                         <a class="close-link"><i class="fa fa-plus" ng-click="lessonEditService.addTopic()"></i></a>
