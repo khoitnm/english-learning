@@ -8,6 +8,9 @@ var LessonEditService = function ($http, $q, $routeParams) {
     this.expressionItemInit = undefined;
     this.meaningInit = undefined;
 
+    this.isShowExpression = true;
+    this.isShowMeaning = true;
+
     this.lesson = undefined;
     this.wordTypes = [
         new WordType("n", "NOUN"),
@@ -53,6 +56,12 @@ LessonEditService.prototype.constructLessonsMenu = function (lessons) {
         items.push(item);
     }
     self.menu = new AngularDropDowns(items);
+};
+LessonEditService.prototype.onOffExpression = function () {
+    this.isShowExpression = !this.isShowExpression;
+};
+LessonEditService.prototype.onOffMeaning = function () {
+    this.isShowMeaning = !this.isShowMeaning;
 };
 LessonEditService.prototype.addTopic = function () {
     var self = this;

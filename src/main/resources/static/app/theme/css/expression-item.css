@@ -1,5 +1,24 @@
+
 .table-input-as-text {
     width: 100%;
+}
+
+.table-input-as-text > thead {
+    color: #F1F1F1;
+    background-color: rgba(52, 73, 94, 0.94);
+}
+
+.table-input-as-text > thead a {
+    color: #FFFFFF;
+}
+
+.table-input-as-text > thead > tr > th {
+    padding: 8px;
+    /*line-height: 1.42857143;*/
+}
+
+.table-input-as-text > tbody > tr:first-child > td {
+    padding-top: 5px;
 }
 
 .table-input-as-text > tbody > tr > td {
@@ -76,4 +95,8 @@
 
 .angucomplete-dropdown .highlight {
     color: #00AA88;
+}
+
+.transparent {
+    opacity: 0;
 }

@@ -73,16 +73,31 @@
                 <div class="table-responsive">
                     <!--<button ng-click="lessonEditService.addExpressionItem()">Add expression item</button>-->
                     <table class="table-input-as-text">
+                        <thead>
+                        <tr>
+                            <th colspan="2">
+                                Expression <a href=""><i class="fa fa-adjust" ng-click="lessonEditService.onOffExpression()"></i></a>
+                                <!--<button class="btn btn-default" style="width: 100%"></button>-->
+                            </th>
+                            <th>
+                                Meaning <a href=""><i class="fa fa-adjust" ng-click="lessonEditService.onOffMeaning()"></i></a>
+                                <!--<button class="btn btn-default" style="width: 100%"></button>-->
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <tr class="expression-item-row" ng-repeat="expressionItem in lessonEditService.lesson.expressionItems">
                             <td style="width: 20px">{{$index + 1}}</td>
                             <td style="width: 30%">
-                                <input type="text" ng-model="expressionItem.expression"
+                                <input type="text"
+                                       ng-class="lessonEditService.isShowExpression ? '': 'transparent'"
+                                       ng-model="expressionItem.expression"
                                        ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
                                        ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input expression"/>
                             </td>
                             <td>
-                                <table width="100%">
+                                <table width="100%" ng-class="lessonEditService.isShowMeaning? '': 'transparent'">
                                     <tr ng-repeat="meaning in expressionItem.meanings">
                                         <td style="width: 60px;">
                                             <input type="text" ng-model="meaning.wordType" ng-change="lessonEditService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>
@@ -124,6 +139,7 @@
                                 </table>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div class="ln_solid"></div>
