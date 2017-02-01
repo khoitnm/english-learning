@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tnmk.el.app.common.entity.BaseEntity;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,12 +19,16 @@ import java.util.stream.Collectors;
  */
 @Document(collection = "ExpressionItem")
 public class ExpressionItem extends BaseEntity {
-    @Indexed
+    @Indexed(unique = true)
     @NotBlank
     private String expression;
-    @Indexed
+
     private ExpressionType type;
-    @Indexed
+
+    @NotNull
+    private UserPoints userPoints;
+
+    //REFERENCES ////////////////////////////////////
     @NotEmpty
     private List<Meaning> meanings;
     @Indexed
@@ -33,10 +38,24 @@ public class ExpressionItem extends BaseEntity {
     @Indexed
     private Set<String> topicIds;
 
+    //RELATION WORDS ////////////////////////////////
+    @Indexed
+    private Set<String> synonymExpressionIds;
+
+    @Indexed
+    private Set<String> oppositeExpressionIds;
+
+    @Indexed
+    private Set<String> irregularVerbs;
+
+    @Indexed
+    private Set<String> pluralNouns;
+
     public ExpressionItem() {
         //Every expressionItem must have at least one meaning.
         meanings = new ArrayList<>();
         meanings.add(new Meaning());
+        userPoints = new UserPoints();
     }
 
     public void addLessonId(String lessonId) {
@@ -72,6 +91,10 @@ public class ExpressionItem extends BaseEntity {
         }
         Set<String> notBlankTopicIds = topicIds.stream().filter(topicId -> StringUtils.isNotBlank(topicId)).collect(Collectors.toSet());
         this.topicIds.addAll(notBlankTopicIds);
+    }
+
+    public String toString() {
+        return this.expression;
     }
 
     public String getExpression() {
@@ -120,5 +143,45 @@ public class ExpressionItem extends BaseEntity {
 
     public void setTopicIds(Set<String> topicIds) {
         this.topicIds = topicIds;
+    }
+
+    public Set<String> getSynonymExpressionIds() {
+        return synonymExpressionIds;
+    }
+
+    public void setSynonymExpressionIds(Set<String> synonymExpressionIds) {
+        this.synonymExpressionIds = synonymExpressionIds;
+    }
+
+    public Set<String> getOppositeExpressionIds() {
+        return oppositeExpressionIds;
+    }
+
+    public void setOppositeExpressionIds(Set<String> oppositeExpressionIds) {
+        this.oppositeExpressionIds = oppositeExpressionIds;
+    }
+
+    public Set<String> getIrregularVerbs() {
+        return irregularVerbs;
+    }
+
+    public void setIrregularVerbs(Set<String> irregularVerbs) {
+        this.irregularVerbs = irregularVerbs;
+    }
+
+    public Set<String> getPluralNouns() {
+        return pluralNouns;
+    }
+
+    public void setPluralNouns(Set<String> pluralNouns) {
+        this.pluralNouns = pluralNouns;
+    }
+
+    public UserPoints getUserPoints() {
+        return userPoints;
+    }
+
+    public void setUserPoints(UserPoints userPoints) {
+        this.userPoints = userPoints;
     }
 }

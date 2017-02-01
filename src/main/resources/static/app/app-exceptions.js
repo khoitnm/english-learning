@@ -1,14 +1,16 @@
 angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     return {
-        //// optional method
-        //response: function (response) {
-        //    if (response.status == 200) {
-        //        $rootScope.globalMessage = "Success";
-        //    } else {
-        //        $rootScope.globalMessage = undefined;
-        //    }
-        //    return response;
-        //},
+        // optional method
+        response: function (response) {
+            //if (response.status == 200) {
+            //    $rootScope.globalMessage = "Success";
+            //} else {
+            //    $rootScope.globalMessage = undefined;
+            //}
+            $rootScope.userMessage = undefined;
+            $rootScope.globalMessage = undefined;
+            return response;
+        },
         responseError: function responseError(rejection) {
             //TODO Maybe 403 is for authorization only. For Session expired, only need to check 401 status.
             if (rejection.status == 403) {

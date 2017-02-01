@@ -3,80 +3,13 @@
         white-space: pre-wrap;
     }
 
-    .search-highlight {
+    .correct-answer {
+        font-weight: lighter;
         color: #00AA88;
     }
 
-    /** --------------------------- */
-    .table-input-as-text {
-        width: 100%;
-    }
-
-    .table-input-as-text > tbody > tr > td {
-        padding: 0px;
-    }
-
-    .table-input-as-text td {
-        vertical-align: top;
-    }
-
-    .table-input-as-text input, .table-input-as-text textarea {
-        width: 100%;
-        color: rgb(115, 135, 156);
-        font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
-        font-size: 13px;
-        box-shadow: none;
-    }
-
-    .table-input-as-text ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-        color: #ECF0F1;
-        font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
-        font-size: 13px;
-        font-style: italic;
-        font-weight: lighter;
-    }
-
-    .table-input-as-text input:not(:focus), .table-input-as-text textarea:not(:focus) {
-        padding: 1px 1px 0px 0px; /* Top-Right-Bottom-Left: The bottom has border, so it doesn't need padding anymore*/
-        border-width: 0px 0px 1px 1px;
-        border-style: dotted;
-        border-color: #ECF0F1 #ECF0F1 #F1F1F1 #F7F7F7;
-    }
-
-    .table-input-as-text input:focus, .table-input-as-text textarea:focus {
-        padding: 1px 0px 0px 0px; /* The bottom has border, so it doesn't need padding anymore*/
-        border-width: 0px 1px 1px 1px;
-        border-style: solid;
-        border-color: rgb(238, 238, 238);
-    }
-
-    .table-input-as-text .angucomplete-dropdown {
-        background-color: #fcf8e3;
-    }
-
-    .expressionItem {
-        border-bottom: 1px solid #D1D1D1;
-    }
-
-    .col-word {
-        width: 30%;
-        font-weight: bolder;
-    }
-
-    .example {
-        color: rgb(205, 210, 220);
-        font-style: italic;
-        font-weight: lighter;
-    }
-
-    .example.active-meaning {
-        color: rgb(195, 200, 210);
-        font-weight: normal;
-    }
-
-    .example.active-example {
-        color: rgb(115, 135, 156);
-        font-weight: normal;
+    .search-highlight {
+        color: #00AA88;
     }
 </style>
 <div class="page-title">
@@ -90,6 +23,7 @@
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12">
+        <!-- Filter -->
         <div class="x_panel">
             <div class="x_title">
                 <h2>Filter
@@ -199,43 +133,54 @@
                     </div>
 
                 </div>
-
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <button type="submit" class="btn btn-success" ng-click="lessonTestService.filterExpressionItems()">Start Testing</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Topic -->
+        <!-- Expression Items -->
         <div class="x_panel">
             <div class="x_title">
-                <h2 ng-repeat="topic in lessonTestService.lesson.topics">
-                    <input type="text" placeholder="Topic" ng-model="topic.name"/>
+                <h2>
+                    Expression Items
                 </h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="close-link"><i class="fa fa-plus" ng-click="lessonTestService.addTopic()"></i></a>
-                    </li>
-                </ul>
+                <!--<ul class="nav navbar-right panel_toolbox">-->
+                <!--<li>-->
+                <!--<a class="close-link"><i class="fa fa-plus" ng-click="lessonTestService.addTopic()"></i></a>-->
+                <!--</li>-->
+                <!--</ul>-->
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                <div ng-show="userMessage" class="alert alert-error">
+                    <i class="fa fa-warning"></i> {{userMessage}}
+                </div>
+
                 <!-- Expression Items Table -->
                 <div class="table-responsive">
                     <!--<button ng-click="lessonTestService.addExpressionItem()">Add expression item</button>-->
                     <table class="table-input-as-text">
-                        <tr class="expressionItem" ng-repeat="expressionItem in lessonTestService.lesson.expressionItems">
+                        <tr class="expression-item-row" ng-repeat="expressionItem in lessonTestService.expressionsTest.questions">
                             <td style="width: 20px">{{$index + 1}}</td>
-                            <td class="col-word">
+                            <td>
                                 <input type="text" ng-model="expressionItem.expressionAnswer"
-                                       placeholder="expression {{$index + 1}}" class="cell-input"/>
+                                       placeholder="expression {{$index + 1}}" class="cell-input expression"/>
+                                <span class="text-inform correct-answer" ng-show="expressionItem.answerResult">{{expressionItem.expression}}</span>
                             </td>
                             <td>
                                 <table width="100%">
                                     <tr ng-repeat="meaning in expressionItem.meanings">
                                         <td style="width: 60px;">
-                                            <span>{{meaning.wordType}}</span>
+                                            <span>{{meaning.wordType | lowercase}}</span>
                                         </td>
                                         <td>
                                             <!--<input type="text" ng-model="meaning.explanation" ng-change="lessonTestService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>-->
-                                            <div class="plain-text">{{meaning.explanation}}</div>
-                                            <table style="width: 100%">
+                                            <div class="plain-text"><span>{{meaning.explanation}}</span></div>
+
+                                            <table style="width: 100%" ng-show="expressionItem.answerResult">
                                                 <tr ng-repeat="example in meaning.examples  track by $index">
                                                     <td style="width: 35px"><label class="example {{meaning.explanation? 'active-meaning': 'inactive-meaning'}}  {{example? 'active-example': 'inactive-example'}}" ng-show="$index == 0">e.g. </label></td>
                                                     <td>
@@ -243,6 +188,20 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <!--{{lessonTestService.getAnswers(expressionItem)}}-->
+                                            <span ng-repeat="ianswerResult in lessonTestService.getLatestFiveAnswers(expressionItem) track by $index">
+                                                <i class="fa " ng-class="ianswerResult > 0 ? 'fa-check-circle-o text-success': 'fa-times-circle-o text-danger'"></i>
+                                            </span>
+
+                                            <!--{{expressionItem.userPoints[USER_ID].answers}}-->
+                                        </td>
+                                        <td style="width: 20px;margin-left: 5px;">
+                                            <span>
+                                                <i class="fa fa-check text-success" ng-show="expressionItem.answerResult == 1"></i>
+                                                <i class="fa fa-times text-danger" ng-show="expressionItem.answerResult == -1"></i>
+                                            </span>
                                         </td>
                                     </tr>
                                 </table>
@@ -254,7 +213,7 @@
                 <!--Save button-->
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <button type="submit" class="btn btn-success" ng-click="lessonTestService.saveLesson()">Save</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="lessonTestService.expressionsTest.answered" ng-click="lessonTestService.submitAnswers(lessonTestService.expressionsTest)">Submit Answers</button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,73 @@
+.table-input-as-text {
+    width: 100%;
+}
+
+.table-input-as-text > tbody > tr > td {
+    padding: 0px;
+}
+
+.table-input-as-text td {
+    vertical-align: top;
+}
+
+.table-input-as-text input, .table-input-as-text textarea {
+    width: 100%;
+    color: rgb(115, 135, 156);
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    box-shadow: none;
+}
+
+.table-input-as-text ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #ECF0F1;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.table-input-as-text input:not(:focus), .table-input-as-text textarea:not(:focus) {
+    padding: 1px 1px 0px 0px; /* Top-Right-Bottom-Left: The bottom has border, so it doesn't need padding anymore*/
+    border-width: 0px 0px 1px 1px;
+    border-style: dotted;
+    border-color: #ECF0F1 #ECF0F1 #F1F1F1 #F7F7F7;
+}
+
+.table-input-as-text input:focus, .table-input-as-text textarea:focus {
+    padding: 1px 0px 0px 0px; /* The bottom has border, so it doesn't need padding anymore*/
+    border-width: 0px 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(238, 238, 238);
+}
+
+.table-input-as-text .angucomplete-dropdown {
+    background-color: #fcf8e3;
+}
+
+.expression-item-row {
+    border-bottom: 1px solid #D1D1D1;
+}
+
+.expression {
+    font-weight: bolder;
+}
+
+.example {
+    color: rgb(205, 210, 220);
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.example.active-meaning {
+    color: rgb(195, 200, 210);
+    font-weight: normal;
+}
+
+.example.active-example {
+    color: rgb(115, 135, 156);
+    font-weight: normal;
+}
+
+.angucomplete-dropdown .highlight {
+    color: #00AA88;
+}

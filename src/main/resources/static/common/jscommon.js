@@ -23,6 +23,13 @@ Array.prototype.newArray = function (fromValue, toValue) {
     }
     return result;
 };
+Array.prototype.copyTop = function (size) {
+    var end = this.length;
+    if (size <= this.length) {
+        end = size;
+    }
+    return this.slice(0, end);
+};
 Array.prototype.mergeNotBlankValuesToString = function () {
     var result = null;
     for (i = 0; i < this.length; i++) {
@@ -217,7 +224,15 @@ function getField(object, fieldExpression) {
     }
     return object;
 }
-
+function shuffleArray(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}
 String.prototype.beginWithRegExp = function (regExp) {
     var rs = false;
     if (pathname.match(regExp)) {

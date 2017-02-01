@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tnmk.common.infrastructure.projectinfo.ProjectInfoProperties;
 import tnmk.el.app.common.entity.UriPrefixConstants;
+import tnmk.el.app.security.entity.User;
+import tnmk.el.app.security.helper.SecurityContextHelper;
 
 /**
  * @author khoi.tran on 11/6/16.
@@ -22,7 +24,9 @@ public class MainResource {
 
     @RequestMapping(UriPrefixConstants.WEB_PREFIX + "/main")
     public String greetingPage(Model model) {
+        User user = SecurityContextHelper.validateExistAuthenticatedUser();
         model.addAttribute("projectInfo", projectInfoProperties);
+        model.addAttribute("user", user);
         return "main";
     }
 }

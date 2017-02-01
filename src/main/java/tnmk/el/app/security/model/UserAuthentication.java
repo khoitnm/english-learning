@@ -1,8 +1,9 @@
-package tnmk.el.app.security.entity;
+package tnmk.el.app.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tnmk.el.app.security.entity.User;
 
 import java.util.Collection;
 import java.util.Collections;

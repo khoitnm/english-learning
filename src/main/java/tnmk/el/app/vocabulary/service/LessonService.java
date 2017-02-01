@@ -13,6 +13,7 @@ import tnmk.el.app.vocabulary.repository.LessonRepository;
 import tnmk.el.app.vocabulary.repository.TopicRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,11 +53,15 @@ public class LessonService {
         lesson.setTopics(topics);
         topicRepository.save(topics);
 
+        List<ExpressionItem> expressionItems = lesson.getExpressionItems();
         //Save lesson first to generate the lessonId, so that we can set that id into expressionItems.
         if (StringUtils.isBlank(lesson.getId())) {
+            //Temporary remove expressions so that it able to save the lesson (because expressionItems don't have id yet).
+            lesson.setExpressionItems(Collections.emptyList());
             lessonRepository.save(lesson);
         }
-        List<ExpressionItem> expressionItems = lesson.getExpressionItems();
+        lesson.setExpressionItems(expressionItems);
+
         for (ExpressionItem expressionItem : expressionItems) {
             expressionItem.addBookId(lesson.getBookId());
             expressionItem.addLessonId(lesson.getId());
@@ -84,5 +89,9 @@ public class LessonService {
             result.add(lessonIntroduction);
         }
         return result;
+    }
+
+    public Lesson findByName(String lessonName) {
+        return lessonRepository.findOneByName(lessonName);
     }
 }

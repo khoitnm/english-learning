@@ -11,4 +11,6 @@ import java.util.List;
 public interface LessonRepository extends MongoRepository<Lesson, String> {
     @Query(value = "{}", fields = "{'_id':1,'name':1,'bookId':1,'createdDateTime':1}")
     List<Lesson> findAllIntroductions();
+
+    Lesson findOneByName(String name);
 }

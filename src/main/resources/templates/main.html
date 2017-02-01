@@ -37,7 +37,8 @@
     <link th:href="@{/node_modules/gentelella/build/css/custom.min.css}" rel="stylesheet"/>
 
     <!-- Custom styles for this template -->
-    <!--<link href="app/css/login.css" rel="stylesheet"/>-->
+    <link th:href="@{/app/theme/css/expression-item.css}" rel="stylesheet"/>
+
     <!--<link href="app/css/elife.css" rel="stylesheet"/>-->
 
 
@@ -67,6 +68,7 @@
 <!--"[[${user.accessToken}]]";-->
 <script th:inline="text">
     var PROFILE = "[[${projectInfo.profiles[0]}]]";
+    var USER_ID = "[[${user.id}]]";
     //    var ACCESS_TOKEN = "xxx";
 </script>
 <div th:include="parts/import-scripts"></div>

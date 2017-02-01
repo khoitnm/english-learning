@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tnmk.el.app.common.entity.BaseEntity;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +35,8 @@ public class Lesson extends BaseEntity {
 
     public Lesson() {
         //This list must contains at least one item.
-        expressionItems = Arrays.asList(new ExpressionItem());
+        expressionItems = new ArrayList<>();
+        expressionItems.add(new ExpressionItem());
     }
 
     public String getName() {

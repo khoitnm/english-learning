@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tnmk.el.app.security.entity.User;
-import tnmk.el.app.security.entity.UserAuthentication;
+import tnmk.el.app.security.model.UserAuthentication;
 
 /**
  * @author khoi.tran on 1/28/17.
