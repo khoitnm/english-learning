@@ -1,28 +1,74 @@
+<style>
+    .wrap-dd-menu {
+        padding: 0px;
+    }
+</style>
 <div class="page-title">
     <div class="title_left">
-        <h3><input type="text" placeholder="Lesson" ng-model="lessonEditService.lesson.name"/>
-            <small>Editing</small>
+        <h3>
+            Lesson Editing
+            <!--<small>Editing</small>-->
         </h3>
     </div>
-
 </div>
 <div class="clearfix"></div>
+<div class="ln_solid"></div>
+<div class="row">
+    <div class="col-md-2">
+        <a href='' title=''
+           dropdown-menu="lessonEditService.menu.items"
+           dropdown-model="lessonEditService.menu.selectedItem"
+           dropdown-item-label="text">
+            <i class="fa fa-file"></i> Recent Lessons
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a href="#!/expression-item-test?lessonId={{lessonEditService.lesson.id}}"><i class="fa fa-tasks"></i> Test this Lesson</a>
+    </div>
+</div>
+<div class="ln_solid"></div>
 <div class="row">
     <div class="col-md-12">
         <!-- Topic -->
         <div class="x_panel">
             <div class="x_title">
-                <h2 ng-repeat="topic in lessonEditService.lesson.topics">
-                    <input type="text" placeholder="Topic" ng-model="topic.name"/>
+                <h2>
+                    <label>Lesson</label> <input type="text" placeholder="Lesson" ng-model="lessonEditService.lesson.name"/>
                 </h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="close-link"><i class="fa fa-plus" ng-click="lessonEditService.addTopic()"></i></a>
-                    </li>
+                    <!--<li>-->
+                    <!--<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>-->
+                    <!--</li>-->
+                    <!--<li class="dropdown">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
+                    <!--<ul class="dropdown-menu" role="menu">-->
+                    <!--<li><a href="#">Settings 1</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#">Settings 2</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!--</li>-->
+                    <!--<li style="float: right">-->
+                    <!--<a><i class="fa fa-chevron-up"></i></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a class="close-link"><i class="fa fa-plus" ng-click="lessonEditService.addTopic()"></i></a>-->
+                    <!--</li>-->
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="col-md-2" ng-repeat="topic in lessonEditService.lesson.topics">
+                            <input type="text" placeholder="Topic" ng-model="topic.name"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <a class="close-link"><i class="fa fa-plus" ng-click="lessonEditService.addTopic()"></i></a>
+                    </div>
+                </div>
+                <div class="ln_solid"></div>
                 <!-- Expression Items Table -->
                 <div class="table-responsive">
                     <!--<button ng-click="lessonEditService.addExpressionItem()">Add expression item</button>-->

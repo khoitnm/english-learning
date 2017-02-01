@@ -156,6 +156,12 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
+        <!-- Google Translate -->
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-translate</artifactId>
+            <version>0.6.0</version>
+        </dependency>
 
         <!--Test-->
         <dependency>
@@ -163,7 +169,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!--<dependency>-->
         <!--<groupId>org.apache.httpcomponents</groupId>-->
         <!--<artifactId>httpclient</artifactId>-->

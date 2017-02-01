@@ -18,14 +18,14 @@ public class ExpressionItemFilterRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter, Pageable pageable) {
-        Query query = createQuery(userId, expressionFilter);
+    public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter, boolean hasLatestAnswers, Pageable pageable) {
+        Query query = createQuery(userId, expressionFilter, hasLatestAnswers);
         limitFields(userId, query);
-        List<ExpressionItem> result = find(query, ExpressionItem.class, pageable);
+        List<ExpressionItem> result = executeQuery(query, ExpressionItem.class, pageable);
         return result;
     }
 
-    private <T> List<T> find(Query query, Class<T> elementClass, Pageable pageable) {
+    private <T> List<T> executeQuery(Query query, Class<T> elementClass, Pageable pageable) {
         List<T> result = mongoOperations.find(query.with(pageable), elementClass, elementClass.getAnnotation(Document.class).collection());
         return result;
     }
@@ -45,7 +45,7 @@ public class ExpressionItemFilterRepository {
         ;
     }
 
-    private Query createQuery(String userId, ExpressionFilter expressionFilter) {
+    private Query createQuery(String userId, ExpressionFilter expressionFilter, boolean hasLatestAnswers) {
         Query query = new Query();
         if (!expressionFilter.isSelectAllBooks()) {
             if (expressionFilter.getSelectedBookIds() != null && !expressionFilter.getSelectedBookIds().isEmpty()) {
@@ -62,6 +62,7 @@ public class ExpressionItemFilterRepository {
                 query.addCriteria(where("topicIds").in(expressionFilter.getSelectedTopicIds()));
             }
         }
+        query.addCriteria(where("userPoints." + userId + ".latestAnswers").exists(hasLatestAnswers));
 //        query.addCriteria(
 //                where("")
 //                        .orOperator(

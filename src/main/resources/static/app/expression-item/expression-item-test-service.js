@@ -3,6 +3,7 @@ var LessonTestService = function ($http, $q, $routeParams, $sce) {
     this.$q = $q;
     this.$routeParams = $routeParams;
     this.$sce = $sce;
+
     this.lessonFilter = new FilterCollection($sce, "name");
     this.topicFilter = new FilterCollection($sce, "name");
     this.expressionItems = [];
@@ -16,8 +17,12 @@ LessonTestService.prototype.init = function () {
         var lessonIntroductions = arrayOfResults[0].data;
         var topics = arrayOfResults[1].data;
 
-        self.lessonFilter.initByOriginalItems(lessonIntroductions);
-        self.topicFilter.initByOriginalItems(topics);
+        self.lessonFilter.initByOriginalItems(lessonIntroductions, self.$routeParams.lessonId);
+        self.topicFilter.initByOriginalItems(topics, self.$routeParams.topicId);
+
+        if (self.lessonFilter.selectedItems.length > 0 || self.topicFilter.selectedItems.length > 0) {
+            self.filterExpressionItems();
+        }
     });
 };
 LessonTestService.prototype.filterExpressionItems = function () {
@@ -92,10 +97,13 @@ var FilterCollection = function ($sce, filterField) {
     this.selectAll = false;
     this.selectedItems = [];
 };
-FilterCollection.prototype.initByOriginalItems = function (originalItems) {
+FilterCollection.prototype.initByOriginalItems = function (originalItems, selectedItemId) {
     this.originalItems = originalItems;
     this.filterItems();
     this.selectedItems = [];
+    if (isNotBlank(selectedItemId)) {
+        this.selectItemByField("id", selectedItemId);
+    }
 };
 FilterCollection.prototype.filterItems = function () {
     var self = this;
@@ -117,6 +125,11 @@ FilterCollection.prototype.filterItems = function () {
     } else {
         this.filteredItems = self.originalItems.slice();
     }
+};
+FilterCollection.prototype.selectItemByField = function (itemField, itemValue) {
+    var self = this;
+    var item = self.originalItems.findItemByField(itemField, itemValue);
+    self.selectItem(item);
 };
 FilterCollection.prototype.selectItem = function (item) {
     var self = this;

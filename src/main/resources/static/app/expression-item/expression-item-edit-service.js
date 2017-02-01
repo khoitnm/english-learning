@@ -16,6 +16,8 @@ var LessonEditService = function ($http, $q, $routeParams) {
         new WordType("adv", "ADV"),
         new WordType("prep", "PREPOSITION"),
     ];
+    this.lessons = [];
+    this.menu = new AngularDropDowns(this.lessons);
 };
 LessonEditService.prototype.init = function () {
     var self = this;
@@ -23,11 +25,14 @@ LessonEditService.prototype.init = function () {
     var topicInitGet = self.$http.get(contextPath + '/api/topics/initiation');
     var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation');
     var meaningInitGet = self.$http.get(contextPath + '/api/expression-items/meanings/initiation');
-    self.$q.all([lessonInitGet, topicInitGet, expressionItemInitGet, meaningInitGet]).then(function (arrayOfResults) {
+    var lessonsGet = self.$http.get(contextPath + '/api/lessons/introductions');
+    self.$q.all([lessonInitGet, topicInitGet, expressionItemInitGet, meaningInitGet, lessonsGet]).then(function (arrayOfResults) {
         self.lessonInit = arrayOfResults[0].data;
         self.topicInit = arrayOfResults[1].data;
         self.expressionItemInit = arrayOfResults[2].data;
         self.meaningInit = arrayOfResults[3].data;
+        self.lessons = arrayOfResults[4].data;
+        self.constructLessonsMenu(self.lessons.copyTop(20));
 
         var lessonId = self.$routeParams.lessonId;
         if (!hasValue(lessonId)) {
@@ -38,6 +43,16 @@ LessonEditService.prototype.init = function () {
             });
         }
     });
+};
+LessonEditService.prototype.constructLessonsMenu = function (lessons) {
+    var self = this;
+    var items = [];
+    for (var i = 0; i < lessons.length; i++) {
+        var lesson = lessons[i];
+        var item = new AngularDropDownsItem(lesson.name, "#!/expression-item-edit?lessonId=" + lesson.id);
+        items.push(item);
+    }
+    self.menu = new AngularDropDowns(items);
 };
 LessonEditService.prototype.addTopic = function () {
     var self = this;
@@ -190,4 +205,6 @@ angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEd
 angularApp.controller('lessonEditController', ['$scope', '$http', '$q', '$routeParams', 'lessonEditService', function ($scope, $http, $q, $routeParams, lessonEditService) {
     $scope.lessonEditService = lessonEditService;
     lessonEditService.init();
+
+
 }]);

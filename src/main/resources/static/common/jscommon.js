@@ -15,6 +15,19 @@ Array.prototype.remove = function (item) {
         }
     }
 };
+Array.prototype.findItemByField = function (itemFieldExpression, itemValue) {
+    var j = 0;
+    while (j < this.length) {
+        var element = this[j];
+        if (hasValue(element)) {
+            var fieldValue = getField(element, itemFieldExpression);
+            if (fieldValue == itemValue) {
+                return element;
+            }
+        }
+        j++;
+    }
+};
 Array.prototype.newArray = function (fromValue, toValue) {
     var result = [];
     var length = toValue - fromValue;

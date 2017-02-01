@@ -2,13 +2,18 @@
 var contextPath = window.location.origin + '/english-learning';
 
 var angularApp = angular.module('myApp', [
-    'ngSanitize',
-    'ngResource',
-    //'file-model',
-    'ngStorage',
-    'ngRoute',
-    'angucomplete-alt',
-    'ngCookies',
+    'ngSanitize'
+    , 'ngResource'
+    //,'file-model'
+    , 'ngStorage'
+    , 'ngRoute'
+    , 'angucomplete-alt'
+    , 'ngCookies'
+
+    //File menu navigation
+    , 'ngDropdowns'
+    //'ngMaterial'
+    //, 'ngMessages', 'material.svgAssetsCache',
     //'ui.bootstrap',
     //'ngMask'
 ]);

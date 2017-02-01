@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 public class ExpressionItemFilterService {
-
+    public static final int MAX_EXPRESSION_QUERY = 100;
     @Autowired
     private ExpressionItemFilterRepository expressionItemFilterRepository;
 
@@ -31,7 +31,13 @@ public class ExpressionItemFilterService {
      * @return
      */
     public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter) {
-        Sort sort = new Sort(Sort.Direction.ASC, "userPoints." + userId + ".answersLastFive.correctPercentage");
-        return expressionItemFilterRepository.filter(userId, expressionFilter, new PageRequest(0, 100, sort));
+        Sort sort = new Sort(Sort.Direction.ASC, "userPoints." + userId + ".latestAnswer.correctPercentage", "userPoints." + userId + ".answersLength");
+        List<ExpressionItem> result = expressionItemFilterRepository.filter(userId, expressionFilter, false, new PageRequest(0, MAX_EXPRESSION_QUERY, sort));
+        int remainItems = MAX_EXPRESSION_QUERY - result.size();
+        if (remainItems > 0) {
+            List<ExpressionItem> itemsWithLatestAnswers = expressionItemFilterRepository.filter(userId, expressionFilter, true, new PageRequest(0, remainItems, sort));
+            result.addAll(itemsWithLatestAnswers);
+        }
+        return result;
     }
 }
