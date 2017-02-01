@@ -94,13 +94,17 @@
                                        ng-model="expressionItem.expression"
                                        ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
                                        ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
+                                       ng-blur="lessonEditService.translateExpressionItem(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input expression"/>
                             </td>
                             <td>
                                 <table width="100%" ng-class="lessonEditService.isShowMeaning? '': 'transparent'">
                                     <tr ng-repeat="meaning in expressionItem.meanings">
                                         <td style="width: 60px;">
-                                            <input type="text" ng-model="meaning.wordType" ng-change="lessonEditService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>
+                                            <input type="text"
+                                                   style="text-overflow: ellipsis; text-transform: lowercase;"
+                                                   ng-model="meaning.wordType" capitalize
+                                                   ng-change="lessonEditService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>
                                             <!--<angucomplete-alt
                                                     placeholder="type"
                                                     pause="100"

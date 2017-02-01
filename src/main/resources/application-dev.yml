@@ -6,3 +6,10 @@ spring:
             database: englishlearning
             username: englishlearningadmin
             password: password
+google:
+    api:
+        key: AIzaSyA6yFgxn-ZedxCghH1X4xwuLLcltaUlK3c
+translate:
+    yandex:
+        api:
+            key: trnsl.1.1.20170201T133356Z.dd25c6f5b98a0167.896a4b589be6f69359187182616b7e2fe07963c6

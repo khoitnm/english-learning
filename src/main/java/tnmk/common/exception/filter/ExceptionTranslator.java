@@ -58,7 +58,6 @@ public class ExceptionTranslator {
         this.loggingMessage(result, exception);
         return result;
     }
-
     /**
      * In the beautiful life of client team, they don't want a lot of if-else statements.
      * So they don't want to use {@link HttpStatus#BAD_REQUEST} to handle this exception and {@link HttpStatus#}

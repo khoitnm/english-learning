@@ -21,6 +21,9 @@ var LessonEditService = function ($http, $q, $routeParams) {
     ];
     this.lessons = [];
     this.menu = new AngularDropDowns(this.lessons);
+
+    this.sourceLanguage = "en";
+    this.destLanguage = "vi";
 };
 LessonEditService.prototype.init = function () {
     var self = this;
@@ -82,6 +85,20 @@ LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionI
         if (index == self.lesson.expressionItems.length - 1) {
             self.addExpressionItem();
         }
+    }
+};
+LessonEditService.prototype.translateExpressionItem = function (expressionItem) {
+    var self = this;
+    var meaning = expressionItem.meanings[0];
+    if (isBlank(meaning.explanation)) {
+        var translation = new Translation(self.sourceLanguage, self.destLanguage, expressionItem.expression);
+        self.$http.post(contextPath + "/api/translations/", translation).then(function (successResponse) {
+            //have to recheck empty again to avoid that the user input something when ajax request was called.
+            if (isBlank(meaning.explanation)) {
+                var translated = successResponse.data;
+                meaning.explanation = translated.translatedText;
+            }
+        });
     }
 };
 LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
@@ -168,6 +185,7 @@ LessonEditService.prototype.cleanTopics = function (topics) {
 };
 LessonEditService.prototype.cleanExpressionItems = function (expressionItems) {
     var self = this;
+    expressionItems.sortByField("expression", 1);
     for (var i = expressionItems.length - 1; i >= 0; i--) {
         var expressionItem = expressionItems[i];
         self.cleanMeanings(expressionItem.meanings);
@@ -204,7 +222,11 @@ LessonEditService.prototype.cleanMeaningExamples = function (examples) {
 //    self.errorMessage = hasValue(msg) ? self.$sce.trustAsHtml(msg) : null;
 //    console.log(msg);
 //};
-
+var Translation = function (sourceLanguage, destLanguage, sourceText) {
+    this.sourceLanguage = sourceLanguage;
+    this.destLanguage = destLanguage;
+    this.sourceText = sourceText;
+};
 var WordType = function (label, value) {
     this.label = label;
     this.value = value;
