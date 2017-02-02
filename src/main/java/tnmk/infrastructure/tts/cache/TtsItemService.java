@@ -40,6 +40,7 @@ public class TtsItemService {
 
         FileItem newFileItem = fileItemService.save(text + "_" + sourceLanguage + ".mp3", MIMETYPE_MP3, mp3Data);
         ttsItem.setFileItem(newFileItem);
+        ttsItem.setText(text);
         ttsItem.setLocale(sourceLanguage);
         return ttsItemRepository.save(ttsItem);
     }

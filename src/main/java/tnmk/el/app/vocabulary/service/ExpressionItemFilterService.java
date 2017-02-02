@@ -31,7 +31,9 @@ public class ExpressionItemFilterService {
      * @return
      */
     public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter) {
-        Sort sort = new Sort(Sort.Direction.ASC, "userPoints." + userId + ".latestAnswer.correctPercentage", "userPoints." + userId + ".answerDateTime");
+        Sort sort = new Sort(Sort.Direction.ASC, "userPoints." + userId + ".latestAnswer.correctPercentage"
+                , "userPoints." + userId + ".answerDateTime"
+        );
         List<ExpressionItem> result = expressionItemFilterRepository.filter(userId, expressionFilter, false, new PageRequest(0, MAX_EXPRESSION_QUERY, sort));
         int remainItems = MAX_EXPRESSION_QUERY - result.size();
         if (remainItems > 0) {

@@ -164,7 +164,9 @@
                     <!--<button ng-click="lessonTestService.addExpressionItem()">Add expression item</button>-->
                     <table class="table-input-as-text">
                         <tr class="expression-item-row" ng-repeat="expressionItem in lessonTestService.expressionsTest.questions">
-                            <td style="width: 20px">{{$index + 1}}</td>
+                            <td style="width: 20px">
+                                <span style="padding-left:5px; line-height: 25px;">{{$index + 1}}</span>
+                            </td>
                             <td>
                                 <input type="text" ng-model="expressionItem.expressionAnswer"
                                        placeholder="expression {{$index + 1}}" class="cell-input expression"/>
@@ -174,7 +176,7 @@
                                 <table width="100%">
                                     <tr ng-repeat="meaning in expressionItem.meanings">
                                         <td style="width: 60px;">
-                                            <span>{{meaning.wordType | lowercase}}</span>
+                                            <span class="part-of-speech">{{meaning.wordType}}</span>
                                         </td>
                                         <td>
                                             <!--<input type="text" ng-model="meaning.explanation" ng-change="lessonTestService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>-->
@@ -198,7 +200,7 @@
                                             <!--{{expressionItem.userPoints[USER_ID].answers}}-->
                                         </td>
                                         <td style="width: 20px;margin-left: 5px;">
-                                            <span>
+                                            <span ng-show="$index == 0">
                                                 <i class="fa fa-check text-success" ng-show="expressionItem.answerResult == 1"></i>
                                                 <i class="fa fa-times text-danger" ng-show="expressionItem.answerResult == -1"></i>
                                             </span>

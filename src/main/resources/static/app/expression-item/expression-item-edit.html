@@ -85,8 +85,8 @@
                         </thead>
                         <tbody>
                         <tr class="expression-item-row" ng-repeat="expressionItem in lessonEditService.lesson.expressionItems">
-                            <td style="width: 20px">
-                                {{$index + 1}}
+                            <td style="width: 25px; ">
+                                <span style="padding-left:5px; line-height: 24px;">{{$index + 1}}</span>
                             </td>
                             <td style="width: 30%">
                                 <input type="text"
@@ -110,7 +110,7 @@
                                     <tr ng-repeat="meaning in expressionItem.meanings">
                                         <td style="width: 60px;">
                                             <input type="text"
-                                                   style="text-overflow: ellipsis; text-transform: lowercase;"
+                                                   class="part-of-speech"
                                                    ng-model="meaning.wordType" capitalize
                                                    ng-change="lessonEditService.addExpressionMeaningIfNecessary(expressionItem, meaning)"/>
                                             <!--<angucomplete-alt

@@ -97,6 +97,11 @@
     color: #00AA88;
 }
 
+.part-of-speech {
+    text-overflow: ellipsis;
+    text-transform: lowercase;
+}
+
 .transparent {
     opacity: 0;
 }

@@ -31,10 +31,6 @@ public class TextToSpeechResource {
     public void downloadSpeechFromText(@RequestParam(name = "text", required = true) String text, @RequestParam(name = "locale", defaultValue = "en-us") String locale, HttpServletResponse response) throws IOException {
         TtsItem ttsItem = textToSpeechService.toSpeech(locale, text);
         FileItem fileItem = ttsItem.getFileItem();
-//        InputStream mp3InputStream = IOUtil.loadInputStreamFileInClassPath("/tmp/Button-click-sound/Button-click-sound.mp3");
-//        response.addHeader("Content-disposition", "attachment;filename=Button-click-sound.MP3");//Force download file, not streaming.
-//        byte[] data = IOUtil.loadBinaryFileInClassPath("/tmp/Button-click-sound/Button-click-sound.mp3");
-
         response.setContentType(fileItem.getMimeType());
         byte[] mp3Data = fileItem.getBytesContent();
         IOUtils.write(mp3Data, response.getOutputStream());
