@@ -75,19 +75,19 @@
                     <table class="table-input-as-text">
                         <thead>
                         <tr>
-                            <th colspan="2">
+                            <th colspan="3">
                                 Expression <a href=""><i class="fa fa-adjust" ng-click="lessonEditService.onOffExpression()"></i></a>
-                                <!--<button class="btn btn-default" style="width: 100%"></button>-->
                             </th>
                             <th>
                                 Meaning <a href=""><i class="fa fa-adjust" ng-click="lessonEditService.onOffMeaning()"></i></a>
-                                <!--<button class="btn btn-default" style="width: 100%"></button>-->
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="expression-item-row" ng-repeat="expressionItem in lessonEditService.lesson.expressionItems">
-                            <td style="width: 20px">{{$index + 1}}</td>
+                            <td style="width: 20px">
+                                {{$index + 1}}
+                            </td>
                             <td style="width: 30%">
                                 <input type="text"
                                        ng-class="lessonEditService.isShowExpression ? '': 'transparent'"
@@ -96,6 +96,14 @@
                                        ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
                                        ng-blur="lessonEditService.translateExpressionItem(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input expression"/>
+
+                            </td>
+                            <td>
+                                <a href=""
+                                   ng-class="lessonEditService.isShowExpression ? '': 'transparent'"
+                                   ng-click="lessonEditService.playSound(expressionItems)">
+                                    <i class="fa fa-volume-up"></i>
+                                </a>
                             </td>
                             <td>
                                 <table width="100%" ng-class="lessonEditService.isShowMeaning? '': 'transparent'">

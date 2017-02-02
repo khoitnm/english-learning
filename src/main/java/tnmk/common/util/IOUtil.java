@@ -63,6 +63,10 @@ public class IOUtil {
         }
     }
 
+    /**
+     * @param path view more in {@link #loadBinaryFileInClassPath(String)}
+     * @return
+     */
     public static InputStream loadInputStreamFileInClassPath(String path) {
         return IOUtil.class.getResourceAsStream(path);
     }

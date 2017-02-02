@@ -215,13 +215,12 @@ LessonEditService.prototype.cleanMeaningExamples = function (examples) {
         }
     }
 };
-//LessonEditService.prototype.showErrorMessage = function (msg) {
-//    var self = this;
-//    self.infoMessage = null;
-//    self.successMessage = null;
-//    self.errorMessage = hasValue(msg) ? self.$sce.trustAsHtml(msg) : null;
-//    console.log(msg);
-//};
+LessonEditService.prototype.playSound = function (expressionItem) {
+    var audio = new Audio(contextPath + '/api/speechs?text='+expressionItem.expression);
+    audio.play();
+};
+
+
 var Translation = function (sourceLanguage, destLanguage, sourceText) {
     this.sourceLanguage = sourceLanguage;
     this.destLanguage = destLanguage;
