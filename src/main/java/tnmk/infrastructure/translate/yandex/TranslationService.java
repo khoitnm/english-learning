@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import tnmk.common.exception.UnexpectedException;
 import tnmk.infrastructure.translate.cache.TranslateCacheService;
 import tnmk.infrastructure.translate.cache.Translation;
 
@@ -48,7 +49,7 @@ public class TranslationService {
         try {
             uri = new URI("https://translate.yandex.net/api/v1.5/tr.json/translate");
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            throw new UnexpectedException(e.getMessage(), e);
         }
         RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(translateBody, headers, HttpMethod.POST, uri);
         ResponseEntity<TranslateResult> responseEntity = restTemplate.exchange(requestEntity, TranslateResult.class);

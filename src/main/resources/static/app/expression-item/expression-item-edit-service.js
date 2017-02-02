@@ -216,7 +216,7 @@ LessonEditService.prototype.cleanMeaningExamples = function (examples) {
     }
 };
 LessonEditService.prototype.playSound = function (expressionItem) {
-    var audio = new Audio(contextPath + '/api/speechs?text='+expressionItem.expression);
+    var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
     audio.play();
 };
 
