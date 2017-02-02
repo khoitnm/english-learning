@@ -2,6 +2,7 @@ package tnmk.el.app.vocabulary.entity;
 
 import tnmk.el.app.vocabulary.util.UserPointUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class UserPoint {
     private String userId;
     private List<Integer> answers;
     private int answersLength = 0;
+    private Instant answerDateTime;
     //Below values are calculated from answers, they are only useful for querying.
     //    @Indexed
     private AnswerCalculation latestAnswers;
@@ -66,5 +68,13 @@ public class UserPoint {
 
     public void setAnswersLength(int answersLength) {
         this.answersLength = answersLength;
+    }
+
+    public Instant getAnswerDateTime() {
+        return answerDateTime;
+    }
+
+    public void setAnswerDateTime(Instant answerDateTime) {
+        this.answerDateTime = answerDateTime;
     }
 }

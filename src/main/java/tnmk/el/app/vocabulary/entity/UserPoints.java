@@ -1,5 +1,6 @@
 package tnmk.el.app.vocabulary.entity;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class UserPoints extends HashMap<String, UserPoint> {
     public void putUserPoint(String userId, List<Integer> answers) {
         UserPoint userPoint = new UserPoint(userId, answers);
+        userPoint.setAnswerDateTime(Instant.now());
         putUserPoint(userId, userPoint);
     }
 
@@ -22,9 +24,10 @@ public class UserPoints extends HashMap<String, UserPoint> {
         List<Integer> answers = userPoint.getAnswers();
         answers.add(newAnswer);
         userPoint.setAnswers(answers);
+        userPoint.setAnswerDateTime(Instant.now());
     }
 
-    public void putUserPoint(String userId, UserPoint userPoint) {
+    private void putUserPoint(String userId, UserPoint userPoint) {
         userPoint.setUserId(userId);
         super.put(userId, userPoint);
     }
