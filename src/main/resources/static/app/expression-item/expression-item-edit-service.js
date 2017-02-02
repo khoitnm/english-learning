@@ -101,6 +101,21 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem) 
         });
     }
 };
+LessonEditService.prototype.favourite = function (expressionItem) {
+    var self = this;
+    var userPoint = expressionItem.userPoints[USER_ID];
+    userPoint.favourite = (userPoint.favourite == -1) ? 0 : -1;
+    var favouriteUpdateRequest = {
+        expressionId: expressionItem.id
+        , favourite: userPoint.favourite
+    };
+    self.$http.post(contextPath + "/api/expression-items/favourite", favouriteUpdateRequest).then(function (successResponse) {
+        var updatedRowsCount = successResponse.data;
+        if (updatedRowsCount <= 0) {
+            console.log("Something wrong, there's no expression favourite is updated: " + updatedRowsCount);
+        }
+    });
+};
 LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
     var self = this;
     var meaning = angular.copy(self.meaningInit);
@@ -235,6 +250,6 @@ angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEd
 angularApp.controller('lessonEditController', ['$scope', '$http', '$q', '$routeParams', 'lessonEditService', function ($scope, $http, $q, $routeParams, lessonEditService) {
     $scope.lessonEditService = lessonEditService;
     lessonEditService.init();
-
+    $scope.USER_ID = USER_ID;
 
 }]);

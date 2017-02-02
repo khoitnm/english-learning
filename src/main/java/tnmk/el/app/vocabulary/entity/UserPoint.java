@@ -12,6 +12,7 @@ import java.util.List;
 public class UserPoint {
     public static final int CALCULATE_POINTS_IN_LASTEST_TIMES = 2;
     private String userId;
+    private int favourite = 0;
     private List<Integer> answers;
     private int answersLength = 0;
     private Instant answerDateTime;
@@ -76,5 +77,13 @@ public class UserPoint {
 
     public void setAnswerDateTime(Instant answerDateTime) {
         this.answerDateTime = answerDateTime;
+    }
+
+    public int getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(int favourite) {
+        this.favourite = favourite;
     }
 }

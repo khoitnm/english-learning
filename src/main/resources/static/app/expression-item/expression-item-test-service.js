@@ -7,7 +7,8 @@ var LessonTestService = function ($http, $q, $routeParams, $sce) {
     this.lessonFilter = new FilterCollection($sce, "name");
     this.topicFilter = new FilterCollection($sce, "name");
     this.expressionItems = [];
-    this.expressionsTest = new ExpressionsTest(this.expressionItems);
+    this.totalQuestions = 10;
+    this.expressionsTest = new ExpressionsTest(this.expressionItems, this.totalQuestions);
 };
 LessonTestService.prototype.init = function () {
     var self = this;
@@ -60,14 +61,31 @@ LessonTestService.prototype.submitAnswers = function (test) {
     });
 };
 LessonTestService.prototype.initTestQuestions = function () {
-    this.expressionsTest = new ExpressionsTest(this.expressionItems);
+    this.expressionsTest = new ExpressionsTest(this.expressionItems, this.totalQuestions);
 };
 
-var ExpressionsTest = function (expressionItems) {
+//TODO this method is duplicated in file expression-item-edit-service.js
+LessonTestService.prototype.favourite = function (expressionItem) {
+    var self = this;
+    var userPoint = expressionItem.userPoints[USER_ID];
+    userPoint.favourite = (userPoint.favourite == -1) ? 0 : -1;
+    var favouriteUpdateRequest = {
+        expressionId: expressionItem.id
+        , favourite: userPoint.favourite
+    };
+    self.$http.post(contextPath + "/api/expression-items/favourite", favouriteUpdateRequest).then(function (successResponse) {
+        var updatedRowsCount = successResponse.data;
+        if (updatedRowsCount <= 0) {
+            console.log("Something wrong, there's no expression favourite is updated: " + updatedRowsCount);
+        }
+    });
+};
+// /////////////////////////////////////////////////////////////////////////////////////////////
+var ExpressionsTest = function (expressionItems, totalQuestions) {
     this.expressionItems = expressionItems;
     this.answered = false;
     this.questions = [];
-    this.initTest(10);
+    this.initTest(totalQuestions);
 };
 ExpressionsTest.prototype.initTest = function (expressionsCount) {
     this.questions = this.expressionItems.slice();

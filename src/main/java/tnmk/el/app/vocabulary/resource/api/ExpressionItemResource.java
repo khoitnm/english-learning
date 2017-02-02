@@ -13,8 +13,8 @@ import tnmk.el.app.vocabulary.entity.Meaning;
 import tnmk.el.app.vocabulary.model.ExpressionFilter;
 import tnmk.el.app.vocabulary.model.ExpressionItemAnswer;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
-import tnmk.el.app.vocabulary.service.ExpressionAnswerService;
 import tnmk.el.app.vocabulary.service.ExpressionItemFilterService;
+import tnmk.el.app.vocabulary.service.ExpressionUserPointService;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ExpressionItemResource {
     @Autowired
     private ExpressionItemFilterService expressionItemFilterService;
     @Autowired
-    private ExpressionAnswerService expressionAnswerService;
+    private ExpressionUserPointService expressionUserPointService;
 
     @Autowired
     private ExpressionItemRepository expressionItemRepository;
@@ -44,9 +44,15 @@ public class ExpressionItemResource {
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/answers", method = RequestMethod.POST)
-    public List<? extends ExpressionItem> save(@RequestBody List<ExpressionItemAnswer> expressionItemAnswers) {
+    public List<? extends ExpressionItem> updateAnswers(@RequestBody List<ExpressionItemAnswer> expressionItemAnswers) {
         User user = SecurityContextHelper.validateExistAuthenticatedUser();
-        return expressionAnswerService.updateAnswers(user.getId(), expressionItemAnswers);
+        return expressionUserPointService.updateAnswers(user.getId(), expressionItemAnswers);
+    }
+
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/favourite", method = RequestMethod.POST)
+    public int updateFavourite(@RequestBody ExpressionUserPointService.ExpressionFavouriteRequest expressionFavouriteRequest) {
+        User user = SecurityContextHelper.validateExistAuthenticatedUser();
+        return expressionUserPointService.updateFavourite(user.getId(), expressionFavouriteRequest);
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/filter", method = RequestMethod.POST)
@@ -54,4 +60,5 @@ public class ExpressionItemResource {
         User user = SecurityContextHelper.validateExistAuthenticatedUser();
         return expressionItemFilterService.filter(user.getId(), expressionFilter);
     }
+
 }

@@ -1,14 +1,18 @@
 package tnmk.el.app.vocabulary.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import tnmk.common.util.ObjectMapperUtil;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
 import tnmk.el.app.vocabulary.model.ExpressionFilter;
 import tnmk.el.app.vocabulary.repository.ExpressionItemFilterRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class will filter suitable expressions for a user to test.
@@ -18,7 +22,8 @@ import java.util.List;
  */
 @Service
 public class ExpressionItemFilterService {
-    public static final int MAX_EXPRESSION_QUERY = 100;
+    public static final Logger LOGGER = LoggerFactory.getLogger(ExpressionItemFilterService.class);
+    public static final int MAX_EXPRESSION_ITEMS = 100;
     @Autowired
     private ExpressionItemFilterRepository expressionItemFilterRepository;
 
@@ -31,15 +36,31 @@ public class ExpressionItemFilterService {
      * @return
      */
     public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter) {
-        Sort sort = new Sort(Sort.Direction.ASC, "userPoints." + userId + ".latestAnswer.correctPercentage"
+//        Sort sort = new Sort(Arrays.asList(
+//                new Sort.Order(Sort.Direction.DESC, "userPoints." + userId + ".favourite")
+//                , new Sort.Order(Sort.Direction.ASC, "userPoints." + userId + ".latestAnswers.correctPercentage")
+//                , new Sort.Order(Sort.Direction.ASC, "userPoints." + userId + ".answerDateTime")
+//        ));
+        Sort sort = new Sort(Sort.Direction.ASC
+//                , "userPoints." + userId + ".favourite"
+                , "userPoints." + userId + ".latestAnswers.correctPercentage"
                 , "userPoints." + userId + ".answerDateTime"
         );
-        List<ExpressionItem> result = expressionItemFilterRepository.filter(userId, expressionFilter, false, new PageRequest(0, MAX_EXPRESSION_QUERY, sort));
-        int remainItems = MAX_EXPRESSION_QUERY - result.size();
-        if (remainItems > 0) {
-            List<ExpressionItem> itemsWithLatestAnswers = expressionItemFilterRepository.filter(userId, expressionFilter, true, new PageRequest(0, remainItems, sort));
-            result.addAll(itemsWithLatestAnswers);
-        }
+        int remainItems = MAX_EXPRESSION_ITEMS;
+        List<ExpressionItem> result = expressionItemFilterRepository.filter(userId, expressionFilter, true, false, new PageRequest(0, remainItems, sort));
+        remainItems = MAX_EXPRESSION_ITEMS - result.size();
+        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, true, true, new PageRequest(0, remainItems, sort)));
+        remainItems = MAX_EXPRESSION_ITEMS - result.size();
+        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, false, new PageRequest(0, remainItems, sort)));
+        remainItems = MAX_EXPRESSION_ITEMS - result.size();
+        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, true, new PageRequest(0, remainItems, sort)));
+
+        LOGGER.info("Answered: \n" + ObjectMapperUtil.toStringMultiLineForEachElement(result.stream().map(
+                item -> item.getUserPoints().getUserPoint(userId).getFavourite()
+                        + "\t" + item.getUserPoints().getUserPoint(userId).getLatestAnswers().getCorrectPercentage()
+                        + "\t" + item.getUserPoints().getUserPoint(userId).getAnswerDateTime()
+                        + "\t" + item.getExpression())
+                .collect(Collectors.toList())));
         return result;
     }
 }

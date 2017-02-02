@@ -16,7 +16,7 @@ import java.util.List;
  * @author khoi.tran on 1/26/17.
  */
 @Service
-public class ExpressionAnswerService {
+public class ExpressionUserPointService {
 
     @Autowired
     private ExpressionItemUserPointsRepository expressionItemUserPointsRepository;
@@ -32,5 +32,30 @@ public class ExpressionAnswerService {
         }
         expressionItemUserPointsRepository.updateUserPoints(userId, saveItems);
         return expressionItemAnswers;
+    }
+
+    public int updateFavourite(String userId, ExpressionFavouriteRequest expressionFavouriteRequest) {
+        return expressionItemUserPointsRepository.updateFavourite(userId, expressionFavouriteRequest.getExpressionId(), expressionFavouriteRequest.getFavourite());
+    }
+
+    public static class ExpressionFavouriteRequest {
+        private String expressionId;
+        private int favourite;
+
+        public String getExpressionId() {
+            return expressionId;
+        }
+
+        public void setExpressionId(String expressionId) {
+            this.expressionId = expressionId;
+        }
+
+        public int getFavourite() {
+            return favourite;
+        }
+
+        public void setFavourite(int favourite) {
+            this.favourite = favourite;
+        }
     }
 }

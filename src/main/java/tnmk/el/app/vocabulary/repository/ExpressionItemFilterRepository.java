@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
@@ -18,8 +19,8 @@ public class ExpressionItemFilterRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter, boolean hasLatestAnswers, Pageable pageable) {
-        Query query = createQuery(userId, expressionFilter, hasLatestAnswers);
+    public List<ExpressionItem> filter(String userId, ExpressionFilter expressionFilter, boolean hasFavourite, boolean hasLatestAnswers, Pageable pageable) {
+        Query query = createQuery(userId, expressionFilter, hasFavourite, hasLatestAnswers);
         limitFields(userId, query);
         List<ExpressionItem> result = executeQuery(query, ExpressionItem.class, pageable);
         return result;
@@ -32,11 +33,6 @@ public class ExpressionItemFilterRepository {
 
     private void limitFields(String userId, Query query) {
         query.fields()
-//                .exclude("bookIds")
-//                .exclude("lessonIds")
-//                .exclude("topicIds")
-//                .exclude("userPoints")
-
                 .include("expression")
                 .include("type")
                 .include("expression")
@@ -45,7 +41,7 @@ public class ExpressionItemFilterRepository {
         ;
     }
 
-    private Query createQuery(String userId, ExpressionFilter expressionFilter, boolean hasLatestAnswers) {
+    private Query createQuery(String userId, ExpressionFilter expressionFilter, boolean hasFavourite, boolean hasLatestAnswers) {
         Query query = new Query();
         if (!expressionFilter.isSelectAllBooks()) {
             if (expressionFilter.getSelectedBookIds() != null && !expressionFilter.getSelectedBookIds().isEmpty()) {
@@ -62,15 +58,9 @@ public class ExpressionItemFilterRepository {
                 query.addCriteria(where("topicIds").in(expressionFilter.getSelectedTopicIds()));
             }
         }
+        Criteria favouriteCriteria = where("userPoints." + userId + ".favourite").is(hasFavourite ? -1 : 0);
+        query.addCriteria(favouriteCriteria);
         query.addCriteria(where("userPoints." + userId + ".latestAnswers").exists(hasLatestAnswers));
-//        query.addCriteria(
-//                where("")
-//                        .orOperator(
-//                                where("userPoints").exists(false)
-//                                , where("userPoints." + userId).exists(false)
-//                                , where("userPoints." + userId + ".answersLastFive.correctPercentage").lt(0.3)
-//                        )
-//        );
         return query;
     }
 }

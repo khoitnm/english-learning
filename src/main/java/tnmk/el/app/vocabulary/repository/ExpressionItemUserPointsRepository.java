@@ -31,10 +31,9 @@ public class ExpressionItemUserPointsRepository {
     public int updateUserPoints(String userId, List<ExpressionItem> expressionItems) {
         List<Pair<Query, Update>> updateOps = new ArrayList<>();
         for (ExpressionItem expressionItem : expressionItems) {
-            Query query = new Query().addCriteria(where("_id").is(new ObjectId(expressionItem.getId())));
+            Query query = createQueryById(expressionItem.getId());
             UserPoint userPoint = expressionItem.getUserPoints().getUserPoint(userId);
-            DBObject dbObject = new BasicDBObject();
-            mappingMongoConverter.write(userPoint, dbObject);
+            DBObject dbObject = toDBObject(userPoint);
             Update update = Update.update("userPoints." + userId, dbObject);
             Pair<Query, Update> pair = Pair.of(query, update);
             updateOps.add(pair);
@@ -42,5 +41,21 @@ public class ExpressionItemUserPointsRepository {
 
         return mongoOperations.bulkOps(BulkOperations.BulkMode.ORDERED, ExpressionItem.class, ExpressionItem.class.getAnnotation(Document.class).collection()).updateOne(updateOps).execute().getModifiedCount();
 
+    }
+
+    public int updateFavourite(String userId, String expressionId, int favourite) {
+        Query query = createQueryById(expressionId);
+        Update update = Update.update("userPoints." + userId + ".favourite", favourite);
+        return mongoOperations.updateMulti(query, update, ExpressionItem.class).getN();
+    }
+
+    private DBObject toDBObject(Object object) {
+        DBObject dbObject = new BasicDBObject();
+        mappingMongoConverter.write(object, dbObject);
+        return dbObject;
+    }
+
+    private Query createQueryById(String id) {
+        return new Query().addCriteria(where("_id").is(new ObjectId(id)));
     }
 }
