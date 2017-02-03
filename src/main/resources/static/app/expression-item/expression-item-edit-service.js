@@ -12,14 +12,17 @@ var LessonEditService = function ($http, $q, $routeParams) {
     this.isShowMeaning = true;
 
     this.lesson = undefined;
+
+
     this.wordTypes = [
         new WordType("n", "NOUN"),
         new WordType("v", "VERB"),
         new WordType("adj", "ADJ"),
         new WordType("adv", "ADV"),
-        new WordType("prep", "PREPOSITION"),
+        new WordType("prep", "PREPOSITION")
     ];
     this.lessons = [];
+    this.topics = [];
     this.menu = new AngularDropDowns(this.lessons);
 
     this.sourceLanguage = "en";
@@ -32,12 +35,15 @@ LessonEditService.prototype.init = function () {
     var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation');
     var meaningInitGet = self.$http.get(contextPath + '/api/expression-items/meanings/initiation');
     var lessonsGet = self.$http.get(contextPath + '/api/lessons/introductions');
-    self.$q.all([lessonInitGet, topicInitGet, expressionItemInitGet, meaningInitGet, lessonsGet]).then(function (arrayOfResults) {
+    var topicsGet = self.$http.get(contextPath + '/api/topics');
+
+    self.$q.all([lessonInitGet, topicInitGet, expressionItemInitGet, meaningInitGet, lessonsGet, topicsGet]).then(function (arrayOfResults) {
         self.lessonInit = arrayOfResults[0].data;
         self.topicInit = arrayOfResults[1].data;
         self.expressionItemInit = arrayOfResults[2].data;
         self.meaningInit = arrayOfResults[3].data;
         self.lessons = arrayOfResults[4].data;
+        self.topics = arrayOfResults[5].data;
         self.constructLessonsMenu(self.lessons.copyTop(20));
 
         var lessonId = self.$routeParams.lessonId;
@@ -104,6 +110,10 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem) 
 LessonEditService.prototype.favourite = function (expressionItem) {
     var self = this;
     var userPoint = expressionItem.userPoints[USER_ID];
+    if (!hasValue(userPoint)) {
+        userPoint = {};
+        expressionItem.userPoints[USER_ID] = userPoint;
+    }
     userPoint.favourite = (userPoint.favourite == -1) ? 0 : -1;
     var favouriteUpdateRequest = {
         expressionId: expressionItem.id

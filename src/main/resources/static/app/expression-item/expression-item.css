@@ -94,7 +94,7 @@
 }
 
 .angucomplete-dropdown .highlight {
-    color: #00AA88;
+    color: #26B99A;
 }
 
 .part-of-speech {
@@ -107,5 +107,13 @@
 }
 
 .favourite {
-    color: #f5e79e;
+    color: #26B99A; /*#FFD700;*/
+}
+
+.no-favourite {
+    color: #E4E7EA;
+}
+
+.tag:after {
+    border-left: 0px; /* Fix error when selecting tag in expression-item-test.html*/
 }

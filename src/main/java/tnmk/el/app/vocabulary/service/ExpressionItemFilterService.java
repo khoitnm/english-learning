@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import tnmk.common.util.ObjectMapperUtil;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
 import tnmk.el.app.vocabulary.model.ExpressionFilter;
 import tnmk.el.app.vocabulary.repository.ExpressionItemFilterRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This class will filter suitable expressions for a user to test.
@@ -55,12 +53,12 @@ public class ExpressionItemFilterService {
         remainItems = MAX_EXPRESSION_ITEMS - result.size();
         result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, true, new PageRequest(0, remainItems, sort)));
 
-        LOGGER.info("Answered: \n" + ObjectMapperUtil.toStringMultiLineForEachElement(result.stream().map(
-                item -> item.getUserPoints().getUserPoint(userId).getFavourite()
-                        + "\t" + item.getUserPoints().getUserPoint(userId).getLatestAnswers().getCorrectPercentage()
-                        + "\t" + item.getUserPoints().getUserPoint(userId).getAnswerDateTime()
-                        + "\t" + item.getExpression())
-                .collect(Collectors.toList())));
+//        LOGGER.info("Answered: \n" + ObjectMapperUtil.toStringMultiLineForEachElement(result.stream().map(
+//                item -> item.getUserPoints().getUserPoint(userId).getFavourite()
+//                        + "\t" + item.getUserPoints().getUserPoint(userId).getLatestAnswers().getCorrectPercentage()
+//                        + "\t" + item.getUserPoints().getUserPoint(userId).getAnswerDateTime()
+//                        + "\t" + item.getExpression())
+//                .collect(Collectors.toList())));
         return result;
     }
 }

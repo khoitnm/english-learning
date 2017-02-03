@@ -188,7 +188,7 @@
                                 <a href=""
                                    ng-show="expressionItem.answerResult"
                                    ng-click="lessonTestService.favourite(expressionItem)">
-                                    <i class="fa favourite" ng-class="expressionItem.userPoints[USER_ID].favourite == -1 ? 'fa-star':'fa-star-o'"></i>
+                                    <span style="line-height: 24px;"><i class="fa " ng-class="expressionItem.userPoints[USER_ID].favourite == -1 ? 'fa-star favourite':'fa-star-o no-favourite'"></i></span>
                                 </a>
                             </td>
                             <td>

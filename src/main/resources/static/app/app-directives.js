@@ -27,3 +27,25 @@ angularApp.directive('capitalize', function () {
         }
     };
 });
+
+/**
+ * https://codepen.io/TheLarkInn/post/angularjs-directive-labs-ngenterkey
+ */
+angularApp.directive('ngKeyCodePress', ngKeyCodePress);
+function ngKeyCodePress() {
+    return {
+        restrict: 'A',
+        link: function ($scope, $element, $attrs) {
+            $element.bind("keypress", function (event) {
+                var inputKeyCode = event.which || event.keyCode;
+                var definedKeyCode = $attrs["key-code"];
+                if (inputKeyCode == definedKeyCode) {
+                    $scope.$apply(function () {
+                        $scope.$eval(definedKeyCode, {$event: event});
+                    });
+
+                }
+            });
+        }
+    };
+}

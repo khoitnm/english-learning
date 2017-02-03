@@ -35,6 +35,9 @@ public class UserPoint {
     }
 
     public List<Integer> getAnswers() {
+        if (this.answers == null) {
+            this.answers = new ArrayList<>();
+        }
         ArrayList<Integer> result = new ArrayList<>();
         result.addAll(this.answers);
         return result;

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import tnmk.common.exception.UnexpectedException;
 import tnmk.infrastructure.tts.cache.TtsItemService;
@@ -38,24 +39,29 @@ public class VoiceRssService {
      * @return
      */
     public byte[] toSpeech(String sourceLocale, String originalText) {
-        String text = ttsItemService.cleanupText(originalText);
-
-        MultiValueMap<String, Object> translateBody = new LinkedMultiValueMap<>();
-        translateBody.add("src", text);
-        translateBody.add("hl", sourceLocale);
-        translateBody.add("key", apiKey);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/x-www-form-urlencoded");
-        URI uri;
         try {
-            uri = new URI(HOST + "/");
-        } catch (URISyntaxException e) {
-            throw new UnexpectedException(e.getMessage(), e);
+            String text = ttsItemService.cleanupText(originalText);
+
+            MultiValueMap<String, Object> translateBody = new LinkedMultiValueMap<>();
+            translateBody.add("src", text);
+            translateBody.add("hl", sourceLocale);
+            translateBody.add("key", apiKey);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/x-www-form-urlencoded");
+            URI uri;
+            try {
+                uri = new URI(HOST + "/");
+            } catch (URISyntaxException e) {
+                throw new UnexpectedException(e.getMessage(), e);
+            }
+            RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(translateBody, headers, HttpMethod.POST, uri);
+
+            ResponseEntity<byte[]> responseEntity = restTemplate.exchange(requestEntity, byte[].class);
+            return responseEntity.getBody();
+        } catch (ResourceAccessException ex) {
+            throw new UnexpectedException("Cannot connect to external Text-To-Speech Service.", ex);
         }
-        RequestEntity<MultiValueMap<String, Object>> requestEntity = new RequestEntity<>(translateBody, headers, HttpMethod.POST, uri);
-        ResponseEntity<byte[]> responseEntity = restTemplate.exchange(requestEntity, byte[].class);
-        return responseEntity.getBody();
 //        return null;
     }
 }

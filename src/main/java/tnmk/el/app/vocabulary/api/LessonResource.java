@@ -1,4 +1,4 @@
-package tnmk.el.app.vocabulary.resource.api;
+package tnmk.el.app.vocabulary.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,5 +41,10 @@ public class LessonResource {
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/lessons", method = RequestMethod.POST)
     public Lesson save(@RequestBody Lesson lesson) {
         return lessonService.saveLesson(lesson);
+    }
+
+    @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/lesson", method = RequestMethod.DELETE)
+    public void removeLesson(@RequestBody LessonService.RemoveLessonRequest removeLessonRequest) {
+        lessonService.removeLesson(removeLessonRequest);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import tnmk.el.MainApplication;
 import tnmk.infrastructure.translate.cache.Translation;
-import tnmk.infrastructure.translate.yandex.TranslationService;
+import tnmk.infrastructure.translate.yandex.YandexTranslationService;
 
 /**
  * @author khoi.tran on 2/1/17.
@@ -20,7 +20,7 @@ import tnmk.infrastructure.translate.yandex.TranslationService;
 @WebAppConfiguration
 public class TranslateServiceTest {
     @Autowired
-    private TranslationService translateService;
+    private YandexTranslationService translateService;
 
     @Test
     public void test() {

@@ -22,7 +22,7 @@ import java.util.List;
  * @author khoi.tran on 2/1/17.
  */
 @Service
-public class TranslationService {
+public class YandexTranslationService {
     @Value("${translate.yandex.api.key}")
     private String apiKey;
 

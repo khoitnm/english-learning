@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.infrastructure.translate.cache.Translation;
-import tnmk.infrastructure.translate.yandex.TranslationService;
+import tnmk.infrastructure.translate.yandex.YandexTranslationService;
 
 /**
  * @author khoi.tran on 2/1/17.
@@ -15,7 +15,7 @@ import tnmk.infrastructure.translate.yandex.TranslationService;
 @RestController
 public class TranslationResource {
     @Autowired
-    private TranslationService translateService;
+    private YandexTranslationService translateService;
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/translations", method = RequestMethod.POST)
     public Translation translate(@RequestBody Translation translation) {

@@ -68,6 +68,10 @@ LessonTestService.prototype.initTestQuestions = function () {
 LessonTestService.prototype.favourite = function (expressionItem) {
     var self = this;
     var userPoint = expressionItem.userPoints[USER_ID];
+    if (!hasValue(userPoint)) {
+        userPoint = {};
+        expressionItem.userPoints[USER_ID] = userPoint;
+    }
     userPoint.favourite = (userPoint.favourite == -1) ? 0 : -1;
     var favouriteUpdateRequest = {
         expressionId: expressionItem.id

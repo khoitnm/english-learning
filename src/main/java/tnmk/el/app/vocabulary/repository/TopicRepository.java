@@ -6,4 +6,5 @@ import tnmk.el.app.vocabulary.entity.Topic;
 
 @Repository
 public interface TopicRepository extends MongoRepository<Topic, String> {
+    Topic findOneByName(String name);
 }
