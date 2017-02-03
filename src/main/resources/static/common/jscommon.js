@@ -329,3 +329,12 @@ function numericOnly(field) {
     if (isNaN(num))
         field.value = num.replace(string, "");
 }
+//REFLECTION ////////////////////////
+function copyProperties(source, dest) {
+    for (var key in source) {
+        //copy all the fields
+        dest[key] = source[key];
+    }
+
+    return dest;
+}

@@ -17,3 +17,8 @@ tts:
     voicerss:
         api:
             key: 6a165eb655ea4e84bcbe4cff8082c463
+dictionary:
+    oxford:
+        app:
+            id: 25b544e4
+            key: 720fe7869c5e4093bb3d06cffe2fe4d9

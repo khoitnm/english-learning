@@ -59,21 +59,37 @@
             <div class="x_content">
                 <div class="row">
                     <div class="col-lg-11">
-                        <!--<input type="text"-->
-                        <!--ng-repeat="topic in lessonEditService.lesson.topics"-->
-                        <!--ng-model="topic.name"-->
-                        <!--placeholder="Topic"/>-->
-                        <div ng-repeat="topic in lessonEditService.lesson.topics"
-                             class="col-md-2">
-                            <a href='' title=''
-                               dropdown-menu="lessonEditService.topics"
-                               dropdown-model="lessonEditService.editingTopic"
-                               dropdown-item-label="text">
-                                <input type="text"
-                                       ng-model="topic.name"
-                                       placeholder="Topic"/>
-                            </a>
+
+                        <div ng-repeat="topic in lessonEditService.lesson.topics track by $topicIndex"
+                             class="col-md-2 wrap-dd-menu">
+
+                            <input type="text"
+                                   ng-model="topic.name"
+                                   ng-blur="lessonEditService.finishInputTopic(topic)"
+                                   placeholder="Topic" list="autocomplete_{{$topicIndex}}"/>
+                            <datalist id="autocomplete_{{$topicIndex}}">
+                                <select ng-options="itopic as itopic.name for itopic in lessonEditService.topics track by itopic.name" ng-model="selected"></select>
+                            </datalist>
+                            <!--Topic Name: {{topic.name}}-->
+                            <!--Autocomplete Selected Item: {{topic.autocompleteSelectedItem}}<br/>-->
+                            <!--Topic ID: {{topic.id}}-->
+                            <!--<angucomplete-alt-->
+                            <!--initial-value="topic.name"-->
+                            <!--local-data="lessonEditService.topics"-->
+                            <!--search-fields="name"-->
+                            <!--title-field="name"-->
+                            <!--minlength="1"-->
+
+
+                            <!--selected-object="lessonEditService.selectTopic"-->
+                            <!--input-changed="lessonEditService.changeTopicName"-->
+                            <!--override-suggestions="true"-->
+
+                            <!--pause="100"-->
+                            <!--match-class="highlight"-->
+                            <!--placeholder="type"/>-->
                         </div>
+
                     </div>
                     <div class="col-lg-1">
                         <a class="close-link"><i class="fa fa-plus" ng-click="lessonEditService.addTopic()"></i></a>

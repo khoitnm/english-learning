@@ -23,6 +23,7 @@ var LessonEditService = function ($http, $q, $routeParams) {
     ];
     this.lessons = [];
     this.topics = [];
+    this.topicNames = [];
     this.menu = new AngularDropDowns(this.lessons);
 
     this.sourceLanguage = "en";
@@ -44,6 +45,8 @@ LessonEditService.prototype.init = function () {
         self.meaningInit = arrayOfResults[3].data;
         self.lessons = arrayOfResults[4].data;
         self.topics = arrayOfResults[5].data;
+        self.topicNames = getArrayByFields(self.topics, "name");
+
         self.constructLessonsMenu(self.lessons.copyTop(20));
 
         var lessonId = self.$routeParams.lessonId;
@@ -195,6 +198,17 @@ LessonEditService.prototype.selectWordType = function ($item) {
     }
     console.log(meaning.wordType);
 };
+LessonEditService.prototype.finishInputTopic = function (topic) {
+    var self = this;
+    topic.id = null;//this will become the new topic entity.
+    if (!isBlank(topic.name)) {
+        var existingTopic = self.topics.findItemByField("name", topic.name.trim().toLowerCase());
+        if (hasValue(existingTopic)) {
+            copyProperties(existingTopic, topic);//include copying id.
+        }
+    }
+};
+
 LessonEditService.prototype.cleanLesson = function (lesson) {
     var self = this;
     self.cleanTopics(lesson.topics);

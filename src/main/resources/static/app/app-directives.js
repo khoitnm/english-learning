@@ -28,7 +28,24 @@ angularApp.directive('capitalize', function () {
     };
 });
 
+//angularApp.directive('ngSimpleAutoComplete', function ($timeout) {
+//    return {
+//        require: 'ngModel',
+//        link: function (scope, iElement, iAttrs, modelCtrl) {
+//            iElement.autocomplete({
+//                source: scope[iAttrs.uiItems],
+//                select: function () {
+//                    $timeout(function () {
+//                        iElement.trigger('input');
+//                    }, 0);
+//                }
+//            });
+//        }
+//    };
+//});
+
 /**
+ * Not tested yet
  * https://codepen.io/TheLarkInn/post/angularjs-directive-labs-ngenterkey
  */
 angularApp.directive('ngKeyCodePress', ngKeyCodePress);
