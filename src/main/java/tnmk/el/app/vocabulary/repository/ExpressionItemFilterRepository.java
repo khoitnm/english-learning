@@ -58,7 +58,16 @@ public class ExpressionItemFilterRepository {
                 query.addCriteria(where("topicIds").in(expressionFilter.getSelectedTopicIds()));
             }
         }
-        Criteria favouriteCriteria = where("userPoints." + userId + ".favourite").is(hasFavourite ? -1 : 0);
+        Criteria favouriteCriteria;
+        if (hasFavourite) {
+            favouriteCriteria = where("userPoints." + userId + ".favourite").is(-1);
+        } else {
+            favouriteCriteria = where("").orOperator(
+                    where("userPoints." + userId + ".favourite").is(0)
+                    , where("userPoints." + userId + ".favourite").exists(false)
+            );
+        }
+
         query.addCriteria(favouriteCriteria);
         query.addCriteria(where("userPoints." + userId + ".latestAnswers").exists(hasLatestAnswers));
         return query;

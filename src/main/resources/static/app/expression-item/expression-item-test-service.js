@@ -84,6 +84,10 @@ LessonTestService.prototype.favourite = function (expressionItem) {
         }
     });
 };
+LessonTestService.prototype.playSound = function (expressionItem) {
+    var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
+    audio.play();
+};
 // /////////////////////////////////////////////////////////////////////////////////////////////
 var ExpressionsTest = function (expressionItems, totalQuestions) {
     this.expressionItems = expressionItems;

@@ -186,7 +186,6 @@
                             </td>
                             <td style="width: 20px">
                                 <a href=""
-                                   ng-show="expressionItem.answerResult"
                                    ng-click="lessonTestService.favourite(expressionItem)">
                                     <span style="line-height: 24px;"><i class="fa " ng-class="expressionItem.userPoints[USER_ID].favourite == -1 ? 'fa-star favourite':'fa-star-o no-favourite'"></i></span>
                                 </a>
@@ -198,6 +197,13 @@
                                        placeholder="expression {{$index + 1}}"
                                        class="cell-input expression"/>
                                 <span class="text-inform result-answer" ng-show="expressionItem.answerResult">{{expressionItem.expression}}</span>
+                            </td>
+                            <td style="width: 35px">
+                                <a href=""
+                                   ng-show="expressionItem.answerResult"
+                                   ng-click="lessonTestService.playSound(expressionItem)">
+                                    <i class="fa fa-volume-up"></i>
+                                </a>
                             </td>
                             <td>
                                 <table width="100%">

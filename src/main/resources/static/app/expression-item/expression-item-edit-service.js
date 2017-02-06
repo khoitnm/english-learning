@@ -28,6 +28,21 @@ var LessonEditService = function ($http, $q, $routeParams) {
 
     this.sourceLanguage = "en";
     this.destLanguage = "vi";
+
+    // Editor options.
+    this.editingNote = false;
+    var self = this;
+    this.ckeditor = {
+        options: {
+            language: 'en',
+            allowedContent: true,
+            entities: false
+        },
+        // Called when the editor is completely ready.
+        onReady: function () {
+            self.editingNote = false;
+        }
+    };
 };
 LessonEditService.prototype.init = function () {
     var self = this;
@@ -59,6 +74,7 @@ LessonEditService.prototype.init = function () {
         }
     });
 };
+
 LessonEditService.prototype.constructLessonsMenu = function (lessons) {
     var self = this;
     var items = [];
@@ -110,6 +126,13 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem) 
         });
     }
 };
+LessonEditService.prototype.startEditingNote = function () {
+    this.editingNote = true;
+};
+LessonEditService.prototype.stopEditingNote = function () {
+    this.editingNote = false;
+};
+
 LessonEditService.prototype.favourite = function (expressionItem) {
     var self = this;
     var userPoint = expressionItem.userPoints[USER_ID];
@@ -270,10 +293,11 @@ var WordType = function (label, value) {
     this.value = value;
 };
 
-angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEditService]);
+var lessonEditService = angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEditService]);
 angularApp.controller('lessonEditController', ['$scope', '$http', '$q', '$routeParams', 'lessonEditService', function ($scope, $http, $q, $routeParams, lessonEditService) {
     $scope.lessonEditService = lessonEditService;
     lessonEditService.init();
     $scope.USER_ID = USER_ID;
 
 }]);
+

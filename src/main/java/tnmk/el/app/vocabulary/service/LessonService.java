@@ -45,7 +45,8 @@ public class LessonService {
     }
 
     /**
-     * TODO there will be some garbage expression or topics
+     * TODO there will be some garbage expression or topics???
+     * TODO now I'm not sure about above comment anymore?! :D
      *
      * @param lesson
      * @return

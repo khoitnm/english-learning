@@ -19,9 +19,16 @@ import java.util.stream.Collectors;
  */
 @Document(collection = "ExpressionItem")
 public class ExpressionItem extends BaseEntity {
+    /**
+     * full expression
+     */
     @Indexed(unique = true)
     @NotBlank
     private String expression;
+    /**
+     * If the expression is a phrasal verb, then this value is not null. Otherwise, this value is null.
+     */
+    private PhrasalVerb phrasalVerbDetail;
 
     private ExpressionType type;
 
@@ -184,4 +191,13 @@ public class ExpressionItem extends BaseEntity {
     public void setUserPoints(UserPoints userPoints) {
         this.userPoints = userPoints;
     }
+
+    public PhrasalVerb getPhrasalVerbDetail() {
+        return phrasalVerbDetail;
+    }
+
+    public void setPhrasalVerbDetail(PhrasalVerb phrasalVerbDetail) {
+        this.phrasalVerbDetail = phrasalVerbDetail;
+    }
+
 }

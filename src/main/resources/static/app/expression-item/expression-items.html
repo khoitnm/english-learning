@@ -33,32 +33,29 @@
                             <th>
                                 Created
                             </th>
-                            <td>
+                            <th>
                                 Remove
-                            </td>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="lesson in lessonsService.lessons">
                             <td>
                                 {{$index}}
-
-                                <a href="#!/expression-item-edit?lessonId={{lesson.id}}"><i class="fa fa-edit"></i></a>
-
-                                <a href="#!/expression-item-test?lessonId={{lesson.id}}"><i class="fa fa-tasks"></i></a>
+                                <a href="#!/expression-item-test?lessonId={{lesson.id}}" title="Test"><i class="fa fa-tasks"></i></a>
                             </td>
                             <td>
                                 <label>
                                     <a href="#!/expression-item-edit?lessonId={{lesson.id}}">
-                                        {{lesson.name}}
+                                        <i class="fa fa-edit"></i> {{lesson.name}}
                                     </a>
                                 </label>
                             </td>
                             <td>
                                 {{lesson.createdDateTime * 1000 | date:'yyyy-MM-dd hh:mm:ss'}}
                             </td>
-                            <td>
-                                <a href="" ng-click="lessonsService.removeLesson(lesson)"><i class="fa fa-remove"></i></a>
+                            <td style="width: 20px; text-align: center">
+                                <a href="" ng-click="lessonsService.removeLesson(lesson)" class="text-danger"><i class="fa fa-remove"></i></a>
                             </td>
                         </tr>
                         </tbody>

@@ -21,6 +21,8 @@ public class Lesson extends BaseEntity {
     @NotBlank
     private String name;
 
+    private String noteAsHtml;
+
     @Indexed
     @DBRef
     private Set<Topic> topics = new HashSet<>();
@@ -69,5 +71,13 @@ public class Lesson extends BaseEntity {
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+
+    public String getNoteAsHtml() {
+        return noteAsHtml;
+    }
+
+    public void setNoteAsHtml(String noteAsHtml) {
+        this.noteAsHtml = noteAsHtml;
     }
 }

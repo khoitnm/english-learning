@@ -9,7 +9,7 @@ var angularApp = angular.module('myApp', [
     , 'ngRoute'
     , 'angucomplete-alt'
     , 'ngCookies'
-
+    //, 'ckeditor'
     //File menu navigation
     , 'ngDropdowns'
     //'ngMaterial'
@@ -22,3 +22,4 @@ angularApp.run(function ($localStorage) {
         $localStorage.token = window.ACCESS_TOKEN;
     }
 });
+
