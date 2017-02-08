@@ -12,6 +12,7 @@ var angularApp = angular.module('myApp', [
     //, 'ckeditor'
     //File menu navigation
     , 'ngDropdowns'
+    , 'cfp.hotkeys'
     //'ngMaterial'
     //, 'ngMessages', 'material.svgAssetsCache',
     //'ui.bootstrap',
@@ -22,4 +23,3 @@ angularApp.run(function ($localStorage) {
         $localStorage.token = window.ACCESS_TOKEN;
     }
 });
-

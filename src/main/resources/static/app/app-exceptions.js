@@ -1,14 +1,13 @@
-angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
+angularApp.factory('httpInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     return {
-        // optional method
+        request: function (config) {
+            $rootScope.isRunning = true;
+            return config;
+        },
         response: function (response) {
-            //if (response.status == 200) {
-            //    $rootScope.globalMessage = "Success";
-            //} else {
-            //    $rootScope.globalMessage = undefined;
-            //}
             $rootScope.userMessage = undefined;
             $rootScope.globalMessage = undefined;
+            $rootScope.isRunning = false;
             return response;
         },
         responseError: function responseError(rejection) {
@@ -29,7 +28,7 @@ angularApp.factory('errorHttpInterceptor', ['$q', '$rootScope', function ($q, $r
 }]);
 
 angularApp.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('errorHttpInterceptor');
+    $httpProvider.interceptors.push('httpInterceptor');
 }]);
 
 angular.module('exceptionOverwrite', []).factory('$exceptionHandler', ['$rootScope', function ($rootScope) {

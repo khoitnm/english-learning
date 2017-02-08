@@ -47,11 +47,17 @@ public class ExpressionItemFilterService {
         int remainItems = MAX_EXPRESSION_ITEMS;
         List<ExpressionItem> result = expressionItemFilterRepository.filter(userId, expressionFilter, true, false, new PageRequest(0, remainItems, sort));
         remainItems = MAX_EXPRESSION_ITEMS - result.size();
-        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, true, true, new PageRequest(0, remainItems, sort)));
+        if (remainItems > 0) {
+            result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, true, true, new PageRequest(0, remainItems, sort)));
+        }
         remainItems = MAX_EXPRESSION_ITEMS - result.size();
-        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, false, new PageRequest(0, remainItems, sort)));
+        if (remainItems > 0) {
+            result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, false, new PageRequest(0, remainItems, sort)));
+        }
         remainItems = MAX_EXPRESSION_ITEMS - result.size();
-        result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, true, new PageRequest(0, remainItems, sort)));
+        if (remainItems > 0) {
+            result.addAll(expressionItemFilterRepository.filter(userId, expressionFilter, false, true, new PageRequest(0, remainItems, sort)));
+        }
 
 //        LOGGER.info("Answered: \n" + ObjectMapperUtil.toStringMultiLineForEachElement(result.stream().map(
 //                item -> item.getUserPoints().getUserPoint(userId).getFavourite()

@@ -1,4 +1,5 @@
-var LessonEditService = function ($http, $q, $routeParams) {
+var LessonEditService = function ($rootScope, $http, $q, $routeParams, hotkeys) {
+    this.$rootScope = $rootScope;
     this.$http = $http;
     this.$q = $q;
     this.$routeParams = $routeParams;
@@ -293,11 +294,36 @@ var WordType = function (label, value) {
     this.value = value;
 };
 
-var lessonEditService = angularApp.service('lessonEditService', ['$http', '$q', '$routeParams', LessonEditService]);
-angularApp.controller('lessonEditController', ['$scope', '$http', '$q', '$routeParams', 'lessonEditService', function ($scope, $http, $q, $routeParams, lessonEditService) {
+var lessonEditService = angularApp.service('lessonEditService', ['$rootScope', '$http', '$q', '$routeParams', LessonEditService]);
+angularApp.controller('lessonEditController', ['$rootScope', '$scope', '$http', '$q', '$location', '$routeParams', 'lessonEditService', 'hotkeys', function ($rootScope, $scope, $http, $q, $location, $routeParams, lessonEditService, hotkeys) {
+    $rootScope.isRunning = true;
     $scope.lessonEditService = lessonEditService;
+    //lessonEditService.$rootScope = $rootScope;
     lessonEditService.init();
+
     $scope.USER_ID = USER_ID;
+    //$locationProvider.html5Mode({rewriteLinks: false});
+
+    hotkeys.bindTo($scope)
+        .add({
+            combo: ['ctrl+s', 'command+s'],
+            description: 'Save lesson',
+            callback: function (event) {
+                //prevent default short-cut behaviours of Browser.
+                event.preventDefault();
+                lessonEditService.saveLesson();
+            }
+        })
+        .add({
+            combo: ['ctrl+t', 'command+t'],
+            description: 'Test Lesson',
+            callback: function (event) {
+                event.preventDefault();
+                $location.url("/expression-item-test?lessonId=" + lessonEditService.lesson.id);
+            }
+        })
+    ;
+
 
 }]);
 

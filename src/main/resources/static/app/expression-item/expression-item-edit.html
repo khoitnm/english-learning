@@ -197,7 +197,12 @@
                 <!--Save button-->
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <button type="submit" class="btn btn-success" ng-click="lessonEditService.saveLesson()">Save</button>
+                        <button ng-disabled="isRunning"
+                                ng-click="lessonEditService.saveLesson()"
+                                type="submit" class="btn btn-success"
+                                title="Ctrl+S, Command+S">
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
