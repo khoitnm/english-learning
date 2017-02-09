@@ -37,16 +37,24 @@ public class DeserializerEnumByField<T extends Enum<T>> extends StdDeserializer<
 
     @Override
     public T deserialize(JsonParser jp, DeserializationContext dc) throws IOException {
-        String enumLabel = jp.readValueAs(String.class);
-        if (enumLabel == null) {
+        return deserialize(this.enumClass, this.fieldGetter, jp.getValueAsString());
+    }
+
+    public static <T extends Enum<T>> T deserialize(Class<T> enumClass, String enumFieldName, String enumFieldValue) {
+        Method fieldGetter = BeanUtils.getPropertyDescriptor(enumClass, enumFieldName).getReadMethod();
+        return deserialize(enumClass, fieldGetter, enumFieldValue);
+    }
+
+    public static <T extends Enum<T>> T deserialize(Class<T> enumClass, Method fieldGetter, String enumFieldValue) {
+        if (enumFieldValue == null) {
             return null;
         }
         try {
-            for (T expressionType : enumClass.getEnumConstants()) {
-                Object fieldValue = fieldGetter.invoke(enumClass);
+            for (T ienum : enumClass.getEnumConstants()) {
+                Object fieldValue = fieldGetter.invoke(ienum);
                 String fieldStringValue = StringUtil.toString(fieldValue);
-                if (enumLabel.trim().equalsIgnoreCase(fieldStringValue)) {
-                    return expressionType;
+                if (enumFieldValue.trim().equalsIgnoreCase(fieldStringValue)) {
+                    return ienum;
                 }
             }
         } catch (IllegalAccessException | InvocationTargetException e) {

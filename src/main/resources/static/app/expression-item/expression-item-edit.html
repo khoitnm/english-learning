@@ -29,6 +29,9 @@
     <div class="col-md-2">
         <a href="#!/expression-item-test?lessonId={{lessonEditService.lesson.id}}"><i class="fa fa-tasks"></i> Test this Lesson</a>
     </div>
+    <div class="col-md-2">
+        <a href="" ng-click="lessonEditService.constructNewLesson()"><i class="fa fa-tasks"></i> New Lesson</a>
+    </div>
 </div>
 <div class="ln_solid" style="margin: 10px 0px;"></div>
 <div class="row">
@@ -57,6 +60,12 @@
                             <textarea ck-editor="lessonEditService.ckeditor.options" ng-model="lessonEditService.lesson.noteAsHtml" ready="lessonEditService.ckeditor.onReady()"></textarea>
                             <br/>
                             <button class="btn btn-success" ng-click="lessonEditService.stopEditingNote()">Preview</button>
+                        </div>
+                        <div>
+                            <label>Expression Type: </label>
+
+                            <input type="radio" ng-model="lessonEditService.expressionType" ng-change="lessonEditService.selectExpressionType()" value="word" name="optionsRadios"> Word
+                            <input type="radio" ng-model="lessonEditService.expressionType" ng-change="lessonEditService.selectExpressionType()" value="phrasal verb" name="optionsRadios"> Phrasal Verb
                         </div>
                     </div>
                 </div>

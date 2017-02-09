@@ -8,6 +8,7 @@ var LessonEditService = function ($rootScope, $http, $q, $routeParams, hotkeys) 
     this.topicInit = undefined;
     this.expressionItemInit = undefined;
     this.meaningInit = undefined;
+    this.wordInit = undefined;
 
     this.isShowExpression = true;
     this.isShowMeaning = true;
@@ -44,12 +45,14 @@ var LessonEditService = function ($rootScope, $http, $q, $routeParams, hotkeys) 
             self.editingNote = false;
         }
     };
+
+    this.expressionType = "word";
 };
 LessonEditService.prototype.init = function () {
     var self = this;
     var lessonInitGet = self.$http.get(contextPath + '/api/lessons/initiation');
     var topicInitGet = self.$http.get(contextPath + '/api/topics/initiation');
-    var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation');
+    var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.expressionType);
     var meaningInitGet = self.$http.get(contextPath + '/api/expression-items/meanings/initiation');
     var lessonsGet = self.$http.get(contextPath + '/api/lessons/introductions');
     var topicsGet = self.$http.get(contextPath + '/api/topics');
@@ -57,7 +60,7 @@ LessonEditService.prototype.init = function () {
     self.$q.all([lessonInitGet, topicInitGet, expressionItemInitGet, meaningInitGet, lessonsGet, topicsGet]).then(function (arrayOfResults) {
         self.lessonInit = arrayOfResults[0].data;
         self.topicInit = arrayOfResults[1].data;
-        self.expressionItemInit = arrayOfResults[2].data;
+        self.setExpressionItemInit(arrayOfResults[2].data);
         self.meaningInit = arrayOfResults[3].data;
         self.lessons = arrayOfResults[4].data;
         self.topics = arrayOfResults[5].data;
@@ -67,7 +70,7 @@ LessonEditService.prototype.init = function () {
 
         var lessonId = self.$routeParams.lessonId;
         if (!hasValue(lessonId)) {
-            self.lesson = angular.copy(self.lessonInit);
+            self.constructNewLesson();
         } else {
             self.$http.get(contextPath + "/api/lessons/" + lessonId).then(function (successResponse) {
                 self.lesson = successResponse.data;
@@ -75,7 +78,14 @@ LessonEditService.prototype.init = function () {
         }
     });
 };
-
+LessonEditService.prototype.constructNewLesson = function () {
+    var self = this;
+    self.lesson = angular.copy(self.lessonInit);
+    self.lesson.expressionItems = [self.constructNewExpressionItem()];
+};
+LessonEditService.prototype.constructNewExpressionItem = function () {
+    return angular.copy(this.expressionItemInit);
+};
 LessonEditService.prototype.constructLessonsMenu = function (lessons) {
     var self = this;
     var items = [];
@@ -116,7 +126,7 @@ LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionI
 LessonEditService.prototype.translateExpressionItem = function (expressionItem) {
     var self = this;
     var meaning = expressionItem.meanings[0];
-    if (isBlank(meaning.explanation)) {
+    if (isNotBlank(expressionItem.expression) && isBlank(meaning.explanation)) {
         var translation = new Translation(self.sourceLanguage, self.destLanguage, expressionItem.expression);
         self.$http.post(contextPath + "/api/translations/", translation).then(function (successResponse) {
             //have to recheck empty again to avoid that the user input something when ajax request was called.
@@ -160,6 +170,15 @@ LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
 };
 LessonEditService.prototype.focusExpressionItem = function (expressionItem) {
     var self = this;
+    if (expressionItem.type == "phrasal verb") {
+        var phrasalVerbDetail = expressionItem.phrasalVerbDetail;
+        if (!hasValue(phrasalVerbDetail.words)) {
+            phrasalVerbDetail.words = [];
+        }
+        while (phrasalVerbDetail.words.length < 3) {
+            phrasalVerbDetail.words.push(self.wordInit);
+        }
+    }
     if (expressionItem.meanings.length == 0) {
         self.addExpressionMeaning(expressionItem);
     }
@@ -282,8 +301,23 @@ LessonEditService.prototype.playSound = function (expressionItem) {
     var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
     audio.play();
 };
-
-
+LessonEditService.prototype.selectExpressionType = function () {
+    var self = this;
+    self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.expressionType).then(
+        function (successResponse) {
+            self.setExpressionItemInit(successResponse.data);
+        }
+    );
+};
+LessonEditService.prototype.setExpressionItemInit = function (expressionItem) {
+    var self = this;
+    self.expressionItemInit = expressionItem;
+    if ("phrasal verb" == expressionItem.type) {
+        var phrasalVerbDetail = expressionItem.phrasalVerbDetail;
+        var words = phrasalVerbDetail.words;
+        self.wordInit = words[0];
+    }
+};
 var Translation = function (sourceLanguage, destLanguage, sourceText) {
     this.sourceLanguage = sourceLanguage;
     this.destLanguage = destLanguage;
@@ -320,6 +354,14 @@ angularApp.controller('lessonEditController', ['$rootScope', '$scope', '$http', 
             callback: function (event) {
                 event.preventDefault();
                 $location.url("/expression-item-test?lessonId=" + lessonEditService.lesson.id);
+            }
+        })
+        .add({
+            combo: ['ctrl+n', 'command+n'],
+            description: 'New Lesson',
+            callback: function (event) {
+                event.preventDefault();
+                lessonEditService.constructNewLesson();
             }
         })
     ;

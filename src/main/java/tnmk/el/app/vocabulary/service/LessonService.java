@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tnmk.common.infrastructure.validator.BeanValidator;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
+import tnmk.el.app.vocabulary.entity.ExpressionType;
 import tnmk.el.app.vocabulary.entity.Lesson;
 import tnmk.el.app.vocabulary.entity.LessonIntroduction;
 import tnmk.el.app.vocabulary.entity.Topic;
+import tnmk.el.app.vocabulary.entity.Word;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRemoveRepository;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
 import tnmk.el.app.vocabulary.repository.LessonRepository;
@@ -17,6 +19,7 @@ import tnmk.el.app.vocabulary.repository.LessonRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -93,6 +96,17 @@ public class LessonService {
             expressionItem.addLessonId(savedLesson.getId());
             Set<String> topicIds = savedLesson.getTopics().stream().map(topic -> topic.getId()).collect(Collectors.toSet());
             expressionItem.addTopicIds(topicIds);
+            if (expressionItem.getType().equals(ExpressionType.PHRASAL_VERB)) {
+                List<Word> words = expressionItem.getPhrasalVerbDetail().getWords();
+                ListIterator<Word> listIterator = words.listIterator();
+                while (listIterator.hasNext()) {
+                    Word word = listIterator.next();
+                    if (StringUtils.isBlank(word.getValue())) {
+                        listIterator.remove();
+                    }
+                }
+            }
+
         }
         expressionItems = expressionItems.stream().filter(expressionItem -> StringUtils.isNotBlank(expressionItem.getExpression())).collect(Collectors.toList());
         savedLesson.setExpressionItems(expressionItems);

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tnmk.common.util.EnumUtil;
 import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.el.app.security.entity.User;
 import tnmk.el.app.security.helper.SecurityContextHelper;
@@ -34,9 +35,12 @@ public class ExpressionItemResource {
     private ExpressionItemRepository expressionItemRepository;
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/initiation", method = RequestMethod.GET)
-    public ExpressionItem initExpressionItem(@RequestParam(value = "type", defaultValue = "word") String expressionType) {
+    public ExpressionItem initExpressionItem(@RequestParam(value = "type", defaultValue = "word") String expressionTypeString) {
         ExpressionItem expressionItem = new ExpressionItem();
-        if (expressionType.equals(ExpressionType.PHRASAL_VERB.getStringValue())) {
+        ExpressionType expressionType = EnumUtil.validateExistEnum(ExpressionType.class, "stringValue", expressionTypeString);
+        expressionItem.setType(expressionType);
+
+        if (expressionType.equals(ExpressionType.PHRASAL_VERB)) {
             PhrasalVerb phrasalVerb = new PhrasalVerb();
             List<Word> words = Arrays.asList(new Word(0, "verb", ""), new Word(1, "preposition", ""), new Word(2, "noun", ""));
             phrasalVerb.setWords(words);
