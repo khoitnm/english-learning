@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import tnmk.el.MainApplication;
 import tnmk.el.app.vocabulary.entity.Lesson;
-import tnmk.infrastructure.dataimport.phrasalverb.EnglishClubImport;
+import tnmk.el.infrastructure.dataimport.phrasalverb.EnglishClubImport;
 
 import javax.xml.parsers.ParserConfigurationException;
 

@@ -19,9 +19,9 @@ public class LogUtil {
     public static Instant logRuntime(Instant startTime, String msg) {
         Instant now = Instant.now();
         long runTimeMilli = now.toEpochMilli() - startTime.toEpochMilli();
-        long runTimeSeconds = runTimeMilli / 1000;
+        double runTimeSeconds = (double) runTimeMilli / 1000;
         //TODO should change to debug
-        LOGGER.info(String.format("\n%s\n\tStart time: %s, End time: %s\n\tRuntime: %s ms ~ %s s", msg, startTime, now, runTimeMilli, runTimeSeconds));
+        LOGGER.info(String.format("\n%s\n\tStart time: %s, End time: %s\n\tRuntime: %s ms ~ %.2f s", msg, startTime, now, runTimeMilli, runTimeSeconds));
         return now;
     }
 

@@ -39,8 +39,7 @@ public class SerializerEnumByField<T extends Enum<T>> extends StdSerializer<T> {
     public void serialize(T expressionType, JsonGenerator jgen, SerializerProvider swe) throws IOException {
         try {
             if (expressionType != null) {
-                Object fieldValue = null;
-                fieldValue = fieldGetter.invoke(enumClass);
+                Object fieldValue = fieldGetter.invoke(expressionType);
                 jgen.writeString(StringUtil.toString(fieldValue));
             } else {
                 jgen.writeNull();

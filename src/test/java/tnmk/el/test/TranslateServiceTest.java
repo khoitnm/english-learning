@@ -8,8 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import tnmk.el.MainApplication;
-import tnmk.infrastructure.translate.cache.Translation;
-import tnmk.infrastructure.translate.yandex.YandexTranslationService;
+import tnmk.el.infrastructure.translate.cache.Translation;
+import tnmk.el.infrastructure.translate.yandex.YandexTranslationService;
 
 /**
  * @author khoi.tran on 2/1/17.
