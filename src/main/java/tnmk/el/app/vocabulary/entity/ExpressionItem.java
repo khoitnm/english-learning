@@ -38,21 +38,15 @@ public class ExpressionItem extends BaseEntity {
     //REFERENCES ////////////////////////////////////
     @NotEmpty
     private List<Meaning> meanings;
-    @Indexed
     private Set<String> bookIds;
-    @Indexed
     private Set<String> lessonIds;
-    @Indexed
     private Set<String> topicIds;
 
     //RELATION WORDS ////////////////////////////////
-    @Indexed
     private Set<String> synonymExpressionIds;
 
-    @Indexed
     private Set<String> oppositeExpressionIds;
 
-    @Indexed
     private Set<String> irregularVerbs;
 
     @Indexed

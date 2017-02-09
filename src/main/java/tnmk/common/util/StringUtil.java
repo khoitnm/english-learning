@@ -2,10 +2,40 @@ package tnmk.common.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author khoi.tran on 8/2/16.
  */
 public class StringUtil {
+
+    /**
+     * This is a convenient method to convert any object into String (usually used in reflection).
+     *
+     * @param obj
+     * @return if the obj is null, return null.
+     */
+    public static String toString(Object obj) {
+        String result = null;
+        if (obj != null) {
+            if (obj instanceof String) {
+                result = (String) obj;
+            } else {
+                result = String.valueOf(obj);
+            }
+        }
+        return result;
+    }
+
+    public static List<String> toStrings(List<?> list) {
+        List<String> result = new ArrayList<>();
+        for (Object obj : list) {
+            result.add(obj.toString());
+        }
+        return result;
+    }
+
     public static String newString(Object... strs) {
         StringBuilder sb = new StringBuilder();
         for (Object string : strs) {

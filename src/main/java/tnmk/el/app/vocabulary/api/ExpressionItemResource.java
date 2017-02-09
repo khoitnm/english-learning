@@ -4,18 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.el.app.security.entity.User;
 import tnmk.el.app.security.helper.SecurityContextHelper;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
+import tnmk.el.app.vocabulary.entity.ExpressionType;
 import tnmk.el.app.vocabulary.entity.Meaning;
+import tnmk.el.app.vocabulary.entity.PhrasalVerb;
+import tnmk.el.app.vocabulary.entity.Word;
 import tnmk.el.app.vocabulary.model.ExpressionFilter;
 import tnmk.el.app.vocabulary.model.ExpressionItemAnswer;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
 import tnmk.el.app.vocabulary.service.ExpressionItemFilterService;
 import tnmk.el.app.vocabulary.service.ExpressionUserPointService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,8 +34,15 @@ public class ExpressionItemResource {
     private ExpressionItemRepository expressionItemRepository;
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/initiation", method = RequestMethod.GET)
-    public ExpressionItem initExpressionItem() {
-        return new ExpressionItem();
+    public ExpressionItem initExpressionItem(@RequestParam(value = "type", defaultValue = "word") String expressionType) {
+        ExpressionItem expressionItem = new ExpressionItem();
+        if (expressionType.equals(ExpressionType.PHRASAL_VERB.getStringValue())) {
+            PhrasalVerb phrasalVerb = new PhrasalVerb();
+            List<Word> words = Arrays.asList(new Word(0, "verb", ""), new Word(1, "preposition", ""), new Word(2, "noun", ""));
+            phrasalVerb.setWords(words);
+            expressionItem.setPhrasalVerbDetail(phrasalVerb);
+        }
+        return expressionItem;
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/meanings/initiation", method = RequestMethod.GET)

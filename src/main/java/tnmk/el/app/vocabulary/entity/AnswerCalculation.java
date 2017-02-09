@@ -7,7 +7,6 @@ public class AnswerCalculation {
     private int totalCount = 0;
     private int correctCount = 0;
     private int correctPoint = 0;
-    //    @Indexed
     private double correctPercentage = 0;
 
     public AnswerCalculation() {

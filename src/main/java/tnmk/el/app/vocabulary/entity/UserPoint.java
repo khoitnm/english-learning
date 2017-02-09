@@ -17,7 +17,6 @@ public class UserPoint {
     private int answersLength = 0;
     private Instant answerDateTime;
     //Below values are calculated from answers, they are only useful for querying.
-    //    @Indexed
     private AnswerCalculation latestAnswers;
 
     public UserPoint() {
