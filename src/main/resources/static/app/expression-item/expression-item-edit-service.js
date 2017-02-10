@@ -73,15 +73,22 @@ LessonEditService.prototype.init = function () {
             self.constructNewLesson();
         } else {
             self.$http.get(contextPath + "/api/lessons/" + lessonId).then(function (successResponse) {
-                self.lesson = successResponse.data;
+                self.setLesson(successResponse.data);
             });
         }
     });
 };
 LessonEditService.prototype.constructNewLesson = function () {
     var self = this;
-    self.lesson = angular.copy(self.lessonInit);
+    self.setLesson(angular.copy(self.lessonInit));
     self.lesson.expressionItems = [self.constructNewExpressionItem()];
+};
+LessonEditService.prototype.setLesson = function (lesson) {
+    var self = this;
+    self.lesson = lesson;
+    if (!hasValue(lesson.expressionItems) || lesson.expressionItems.length == 0) {
+        lesson.expressionItems = [self.constructNewExpressionItem()];
+    }
 };
 LessonEditService.prototype.constructNewExpressionItem = function () {
     return angular.copy(this.expressionItemInit);
@@ -226,7 +233,7 @@ LessonEditService.prototype.saveLesson = function () {
     self.cleanLesson(self.lesson);
     self.$http.post(contextPath + '/api/lessons', self.lesson).then(
         function (successResponse) {
-            self.lesson = successResponse.data;
+            self.setLesson(successResponse.data);
         }
     );
 };
@@ -251,6 +258,26 @@ LessonEditService.prototype.finishInputTopic = function (topic) {
         }
     }
 };
+//LessonEditService.prototype.removeLesson = function () {
+//    var self = this;
+//    if (isBlank(self.lesson.id)) {
+//        return;
+//    }
+//    var removeLessonRequest = {
+//        lessonId: self.lesson.id
+//        , includeExpressions: true
+//    };
+//    self.$http({
+//        url: contextPath + "/api/lesson",
+//        method: 'DELETE',
+//        data: removeLessonRequest,
+//        headers: {"Content-Type": "application/json;charset=utf-8"}
+//    })
+//        //    .then(function () {
+//        //    self.constructNewLesson();
+//        //})
+//    ;
+//};
 
 LessonEditService.prototype.cleanLesson = function (lesson) {
     var self = this;
@@ -258,6 +285,9 @@ LessonEditService.prototype.cleanLesson = function (lesson) {
     self.cleanExpressionItems(lesson.expressionItems);
 };
 LessonEditService.prototype.cleanTopics = function (topics) {
+    if (!hasValue(topics)) {
+        return;
+    }
     for (var i = topics.length - 1; i >= 0; i--) {
         var topic = topics[i];
         if (isBlank(topic.name)) {
@@ -267,6 +297,9 @@ LessonEditService.prototype.cleanTopics = function (topics) {
 };
 LessonEditService.prototype.cleanExpressionItems = function (expressionItems) {
     var self = this;
+    if (!hasValue(expressionItems)) {
+        return;
+    }
     expressionItems.sortByField("expression", 1);
     for (var i = expressionItems.length - 1; i >= 0; i--) {
         var expressionItem = expressionItems[i];
@@ -306,6 +339,11 @@ LessonEditService.prototype.selectExpressionType = function () {
     self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.expressionType).then(
         function (successResponse) {
             self.setExpressionItemInit(successResponse.data);
+            self.cleanLesson(self.lesson);
+            var expressionItems = self.lesson.expressionItems;
+            if (isBlank(self.lesson.id) && (!hasValue(expressionItems) || expressionItems.length == 0)) {
+                self.constructNewLesson();
+            }
         }
     );
 };

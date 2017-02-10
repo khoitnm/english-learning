@@ -19,6 +19,10 @@
 <!--<div class="ln_solid"></div>-->
 <div class="row">
     <div class="col-md-2">
+        <a href="" ng-click="lessonEditService.constructNewLesson()"><i class="fa fa-file-text"></i> New Lesson</a>
+    </div>
+
+    <div class="col-md-2">
         <a href='' title=''
            dropdown-menu="lessonEditService.menu.items"
            dropdown-model="lessonEditService.menu.selectedItem"
@@ -30,7 +34,7 @@
         <a href="#!/expression-item-test?lessonId={{lessonEditService.lesson.id}}"><i class="fa fa-tasks"></i> Test this Lesson</a>
     </div>
     <div class="col-md-2">
-        <a href="" ng-click="lessonEditService.constructNewLesson()"><i class="fa fa-tasks"></i> New Lesson</a>
+        <a href="" ng-show="lessonEditService.lesson.id" ng-click="lessonEditService.removeLesson()"><i class="fa fa-close text-red"></i> Remove Lesson</a>
     </div>
 </div>
 <div class="ln_solid" style="margin: 10px 0px;"></div>
