@@ -88,31 +88,20 @@ LessonTestService.prototype.playSound = function (expressionItem) {
     var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
     audio.play();
 };
+
 // /////////////////////////////////////////////////////////////////////////////////////////////
-var ExpressionsTest = function (expressionItems, totalQuestions) {
+var QuestionsTest = function (expressionItems, totalQuestions) {
     this.expressionItems = expressionItems;
     this.answered = false;
-    this.questions = [];
+    this.expressionItemsForAsks = [];
     this.initTest(totalQuestions);
 };
-ExpressionsTest.prototype.initTest = function (expressionsCount) {
-    this.questions = this.expressionItems.slice();
-    this.questions = this.questions.copyTop(expressionsCount);
-    shuffleArray(this.questions);
+QuestionsTest.prototype.initTest = function (expressionsCount) {
+    this.expressionItemsForAsks = this.expressionItems.slice();
+    this.expressionItemsForAsks = this.expressionItemsForAsks.copyTop(expressionsCount);
+    shuffleArray(this.expressionItemsForAsks);
 };
-ExpressionsTest.prototype.checkResult = function () {
-    var self = this;
-    self.answered = true;
-    for (var i = 0; i < self.questions.length; i++) {
-        var question = self.questions[i];
-        if (isNotBlank(question.expressionAnswer) && question.expression == question.expressionAnswer) {
-            question.answerResult = 1;
-        } else {
-            question.answerResult = -1;
-        }
-    }
-};
-
+// /////////////////////////////////////////////////////////////////////////////////////////////
 
 var FilterCollection = function ($sce, filterField) {
     this.$sce = $sce;

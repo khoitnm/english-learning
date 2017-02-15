@@ -22,3 +22,20 @@ dictionary:
         app:
             id: 25b544e4
             key: 720fe7869c5e4093bb3d06cffe2fe4d9
+
+logging:
+    level:
+        org.springframework.data.document.mongodb: INFO
+#        org:
+#            springframework:
+#                data:
+#                    document:
+#                        mongodb: INFO
+#log4j:
+#    category:
+#        org:
+#            springframework:
+#                data:
+#                    document:
+#                        mongodb: INFO
+#       org.springframework.data.document.mongodb: DEBUG

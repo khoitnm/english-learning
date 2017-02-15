@@ -16,8 +16,11 @@ mvn clean install -DskipTests
 Deploy:
 cp target/english-learning.war {TOMCAT_HOME}/webapp/
 
+MongoDB server start:
+mongod -port 27117
+
 # Security
-Now the project doesn't focus much on security, its main target is features implementation.
+The current main target is features implementation, the security will be improve later.
 Now it's using Username - password authentication. The API only uses session to track authenticated user.
 In the future, it should use OAuth2.
 

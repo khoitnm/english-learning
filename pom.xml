@@ -120,7 +120,35 @@
         <dependency><!--It's necessary for Quartz -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+            <!--LOGGING -->
+            <!--<exclusions>-->
+            <!--<exclusion>-->
+            <!--<groupId>commons-logging</groupId>-->
+            <!--<artifactId>commons-logging</artifactId>-->
+            <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
+
+        <!--&lt;!&ndash;LOGGING &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-context</artifactId>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<groupId>commons-logging</groupId>-->
+        <!--<artifactId>commons-logging</artifactId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; LogBack dependencies &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>ch.qos.logback</groupId>-->
+        <!--<artifactId>logback-classic</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>jcl-over-slf4j</artifactId>-->
+        <!--</dependency>-->
 
         <!--AOP-->
         <dependency>

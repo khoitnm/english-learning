@@ -77,6 +77,10 @@
     font-weight: bolder;
 }
 
+.expression-type {
+    font-weight: normal;
+}
+
 .example {
     color: rgb(205, 210, 220);
     font-style: italic;

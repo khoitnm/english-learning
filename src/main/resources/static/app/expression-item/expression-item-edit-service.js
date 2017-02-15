@@ -13,7 +13,8 @@ var LessonEditService = function ($rootScope, $http, $q, $routeParams, hotkeys) 
     this.isShowExpression = true;
     this.isShowMeaning = true;
 
-    this.lesson = undefined;
+    this.lesson = {};
+    this.lesson.defaultExpressionType = "word";
 
 
     this.wordTypes = [
@@ -46,13 +47,12 @@ var LessonEditService = function ($rootScope, $http, $q, $routeParams, hotkeys) 
         }
     };
 
-    this.expressionType = "word";
 };
 LessonEditService.prototype.init = function () {
     var self = this;
     var lessonInitGet = self.$http.get(contextPath + '/api/lessons/initiation');
     var topicInitGet = self.$http.get(contextPath + '/api/topics/initiation');
-    var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.expressionType);
+    var expressionItemInitGet = self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.lesson.defaultExpressionType);
     var meaningInitGet = self.$http.get(contextPath + '/api/expression-items/meanings/initiation');
     var lessonsGet = self.$http.get(contextPath + '/api/lessons/introductions');
     var topicsGet = self.$http.get(contextPath + '/api/topics');
@@ -122,7 +122,7 @@ LessonEditService.prototype.addExpressionItem = function () {
 LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionItem) {
     var self = this;
     var expression = expressionItem.expression;
-    if (hasValue(expression)) {
+    if (hasValue(expression) || self.hasPhrasalVerbWords(expressionItem)) {
         //If changing data of the last item, then add new blank item.
         var index = self.lesson.expressionItems.indexOf(expressionItem);
         if (index == self.lesson.expressionItems.length - 1) {
@@ -143,6 +143,16 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem) 
             }
         });
     }
+};
+LessonEditService.prototype.changePhrasalVerb = function (expressionItem) {
+    var self = this;
+    self.mergePhrasalVerbToExpression(expressionItem);
+    self.addExpressionItemIfNecessary(expressionItem);
+};
+LessonEditService.prototype.mergePhrasalVerbToExpression = function (expressionItem) {
+    var words = expressionItem.phrasalVerbDetail.words;
+    var expression = words.mergeNotBlankValuesToString(" ", "value");
+    expressionItem.expression = expression;
 };
 LessonEditService.prototype.startEditingNote = function () {
     this.editingNote = true;
@@ -209,14 +219,33 @@ LessonEditService.prototype.addExpressionMeaningIfNecessary = function (expressi
 LessonEditService.prototype.changeExpressionMeaning = function ($event, expressionItem, meaning) {
     var self = this;
     var explanation = meaning.explanation;
-
-    //var dom = self.$window.currentTarget;
-    //var line_height = Math.floor(dom.height() / parseInt(dom.attr("rows")));
-    //var dirty_number_of_lines = Math.ceil(dom[0].scrollHeight / line_height);
     if (hasValue(explanation)) {
         meaning.explanationLinesLength = (explanation.match(/\r\n|\r|\n/g) || []).length + 1;
     }
+    self.addExpressionMeaningQuestionIfNecessary(meaning);
     self.addExpressionMeaningIfNecessary(expressionItem, meaning);
+};
+LessonEditService.prototype.addExpressionMeaningQuestionIfNecessary = function (meaning) {
+    var self = this;
+    meaning.fillingQuestions = meaning.fillingQuestions || self.meaningInit.fillingQuestions;
+    var lastQuestion = self.getLastExpressionMeaningQuestion(meaning);
+    if (!hasValue(lastQuestion) || !self.isWordsEmpty(lastQuestion.words)) {
+        meaning.fillingQuestions.push(self.meaningInit.fillingQuestions[0]);
+    }
+};
+LessonEditService.prototype.isWordsEmpty = function (words) {
+    if (!hasValue(words)) return true;
+    for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        if (isBlank(word.value)) {
+            return true;
+        }
+    }
+    return false;
+};
+LessonEditService.prototype.getLastExpressionMeaningQuestion = function (meaning) {
+    if (meaning.fillingQuestions.length == 0) return null;
+    return meaning.fillingQuestions[meaning.fillingQuestions.length - 1];
 };
 LessonEditService.prototype.addMeaningExampleIfNecessary = function (meaning, example, $index) {
     var self = this;
@@ -258,26 +287,25 @@ LessonEditService.prototype.finishInputTopic = function (topic) {
         }
     }
 };
-//LessonEditService.prototype.removeLesson = function () {
-//    var self = this;
-//    if (isBlank(self.lesson.id)) {
-//        return;
-//    }
-//    var removeLessonRequest = {
-//        lessonId: self.lesson.id
-//        , includeExpressions: true
-//    };
-//    self.$http({
-//        url: contextPath + "/api/lesson",
-//        method: 'DELETE',
-//        data: removeLessonRequest,
-//        headers: {"Content-Type": "application/json;charset=utf-8"}
-//    })
-//        //    .then(function () {
-//        //    self.constructNewLesson();
-//        //})
-//    ;
-//};
+LessonEditService.prototype.removeLesson = function () {
+    var self = this;
+    if (isBlank(self.lesson.id)) {
+        return;
+    }
+    var removeLessonRequest = {
+        lessonId: self.lesson.id
+        , includeExpressions: true
+    };
+    self.$http({
+        url: contextPath + "/api/lesson",
+        method: 'DELETE',
+        data: removeLessonRequest,
+        headers: {"Content-Type": "application/json;charset=utf-8"}
+    }).then(function () {
+        self.constructNewLesson();
+    })
+    ;
+};
 
 LessonEditService.prototype.cleanLesson = function (lesson) {
     var self = this;
@@ -304,9 +332,31 @@ LessonEditService.prototype.cleanExpressionItems = function (expressionItems) {
     for (var i = expressionItems.length - 1; i >= 0; i--) {
         var expressionItem = expressionItems[i];
         self.cleanMeanings(expressionItem.meanings);
-        if (isBlank(expressionItem.expression) && expressionItem.meanings.length == 0) {
+        if (self.isEmptyExpression(expressionItem)) {
             expressionItems.splice(i, 1);
         }
+    }
+};
+LessonEditService.prototype.isEmptyExpression = function (expressionItem) {
+    var isEmptyPhrasalVerb = !this.hasPhrasalVerbWords(expressionItem) && expressionItem.meanings.length == 0;
+    var isEmptyExpression = isBlank(expressionItem.expression) && expressionItem.meanings.length == 0;
+    return isEmptyPhrasalVerb && isEmptyExpression;
+};
+LessonEditService.prototype.hasPhrasalVerbWords = function (expressionItem) {
+    if (expressionItem.type == "phrasal verb") {
+        var isEmptyWords = true;
+        if (!hasValue(expressionItem.phrasalVerbDetail)) return false;
+        var words = expressionItem.phrasalVerbDetail.words;
+        for (var i = 0; i < words.length; i++) {
+            var word = words[i];
+            if (!isBlank(word.value)) {
+                isEmptyWords = false;
+                break;
+            }
+        }
+        return !isEmptyWords;
+    } else {
+        return false;
     }
 };
 LessonEditService.prototype.cleanMeanings = function (meanings) {
@@ -336,13 +386,13 @@ LessonEditService.prototype.playSound = function (expressionItem) {
 };
 LessonEditService.prototype.selectExpressionType = function () {
     var self = this;
-    self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.expressionType).then(
+    self.$http.get(contextPath + '/api/expression-items/initiation?type=' + self.lesson.defaultExpressionType).then(
         function (successResponse) {
             self.setExpressionItemInit(successResponse.data);
             self.cleanLesson(self.lesson);
             var expressionItems = self.lesson.expressionItems;
             if (isBlank(self.lesson.id) && (!hasValue(expressionItems) || expressionItems.length == 0)) {
-                self.constructNewLesson();
+                self.lesson.expressionItems = [self.constructNewExpressionItem()];
             }
         }
     );

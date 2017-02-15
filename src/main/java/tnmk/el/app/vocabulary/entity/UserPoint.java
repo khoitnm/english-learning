@@ -1,5 +1,6 @@
 package tnmk.el.app.vocabulary.entity;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import tnmk.el.app.vocabulary.util.UserPointUtils;
 
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.util.List;
 public class UserPoint {
     public static final int CALCULATE_POINTS_IN_LASTEST_TIMES = 2;
     private String userId;
+    @Indexed
     private int favourite = 0;
     private List<Integer> answers;
     private int answersLength = 0;

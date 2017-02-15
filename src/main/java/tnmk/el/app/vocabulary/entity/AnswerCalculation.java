@@ -1,5 +1,7 @@
 package tnmk.el.app.vocabulary.entity;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+
 /**
  * @author khoi.tran on 1/31/17.
  */
@@ -7,6 +9,7 @@ public class AnswerCalculation {
     private int totalCount = 0;
     private int correctCount = 0;
     private int correctPoint = 0;
+    @Indexed
     private double correctPercentage = 0;
 
     public AnswerCalculation() {

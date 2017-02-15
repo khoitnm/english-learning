@@ -22,7 +22,10 @@ public class Lesson extends BaseEntity {
     private String name;
 
     private String noteAsHtml;
-
+    /**
+     * This is only the default expressionType, each expression in this lesson might has different types.
+     */
+    private ExpressionType defaultExpressionType = ExpressionType.WORD;
     @Indexed
     @DBRef
     private Set<Topic> topics = new HashSet<>();
@@ -79,5 +82,13 @@ public class Lesson extends BaseEntity {
 
     public void setNoteAsHtml(String noteAsHtml) {
         this.noteAsHtml = noteAsHtml;
+    }
+
+    public ExpressionType getDefaultExpressionType() {
+        return defaultExpressionType;
+    }
+
+    public void setDefaultExpressionType(ExpressionType defaultExpressionType) {
+        this.defaultExpressionType = defaultExpressionType;
     }
 }

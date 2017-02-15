@@ -43,13 +43,23 @@ Array.prototype.copyTop = function (size) {
     }
     return this.slice(0, end);
 };
-Array.prototype.mergeNotBlankValuesToString = function () {
+Array.prototype.mergeNotBlankValuesToString = function (delimiterString, fieldName) {
     var result = null;
+    var delimiter = ", ";
+    if (isNotBlank(delimiterString)) {
+        delimiter = delimiterString;
+    }
     for (i = 0; i < this.length; i++) {
-        var itemValue = this[i];
+        var item = this[i];
+        var itemValue;
+        if (hasValue(fieldName) && hasValue(item)) {
+            itemValue = getField(item, fieldName);
+        } else {
+            itemValue = item;
+        }
         if (isNotBlank(itemValue)) {
             if (hasValue(result)) {
-                result += ", " + itemValue;
+                result += delimiter + itemValue;
             } else {
                 result = itemValue;
             }
@@ -60,10 +70,11 @@ Array.prototype.mergeNotBlankValuesToString = function () {
 var FieldSort = function (fieldName, asc) {
     this.fieldName = fieldName;
     this.asc = asc;
-}
+};
 var ComparatorByFields = function (fieldSorts) {
     this.fieldSorts = fieldSorts;
 }
+''
 ComparatorByFields.prototype.compareByField = function (fieldName, asc, a, b) {
     var valA = getField(a, fieldName);
     var valB = getField(b, fieldName);

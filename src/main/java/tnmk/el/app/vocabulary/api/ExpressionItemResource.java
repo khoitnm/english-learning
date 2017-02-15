@@ -12,6 +12,7 @@ import tnmk.el.app.security.entity.User;
 import tnmk.el.app.security.helper.SecurityContextHelper;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
 import tnmk.el.app.vocabulary.entity.ExpressionType;
+import tnmk.el.app.vocabulary.entity.FillingQuestion;
 import tnmk.el.app.vocabulary.entity.Meaning;
 import tnmk.el.app.vocabulary.entity.PhrasalVerb;
 import tnmk.el.app.vocabulary.entity.Word;
@@ -39,7 +40,7 @@ public class ExpressionItemResource {
         ExpressionItem expressionItem = new ExpressionItem();
         ExpressionType expressionType = EnumUtil.validateExistEnum(ExpressionType.class, "stringValue", expressionTypeString);
         expressionItem.setType(expressionType);
-
+        expressionItem.setMeanings(Arrays.asList(initMeaning()));
         if (expressionType.equals(ExpressionType.PHRASAL_VERB)) {
             PhrasalVerb phrasalVerb = new PhrasalVerb();
             List<Word> words = Arrays.asList(new Word(0, "verb", ""), new Word(1, "preposition", ""), new Word(2, "noun", ""));
@@ -51,7 +52,12 @@ public class ExpressionItemResource {
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items/meanings/initiation", method = RequestMethod.GET)
     public Meaning initMeaning() {
-        return new Meaning();
+        Meaning meaning = new Meaning();
+        FillingQuestion fillingQuestion = new FillingQuestion();
+        fillingQuestion.setWords(Arrays.asList(new Word(0, "text", ""), new Word(1, "verb", ""), new Word(2, "noun", ""), new Word(3, "preposition", ""), new Word(4, "text", "")));
+        List<FillingQuestion> fillingQuestions = Arrays.asList(fillingQuestion);
+        meaning.setFillingQuestions(fillingQuestions);
+        return meaning;
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/expression-items", method = RequestMethod.GET)

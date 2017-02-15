@@ -15,6 +15,7 @@ import tnmk.el.app.vocabulary.entity.Word;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRemoveRepository;
 import tnmk.el.app.vocabulary.repository.ExpressionItemRepository;
 import tnmk.el.app.vocabulary.repository.LessonRepository;
+import tnmk.el.app.vocabulary.util.WordUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,16 +102,47 @@ public class LessonService {
                 ListIterator<Word> listIterator = words.listIterator();
                 while (listIterator.hasNext()) {
                     Word word = listIterator.next();
-                    if (StringUtils.isBlank(word.getValue())) {
+                    if (word == null || StringUtils.isBlank(word.getValue())) {
                         listIterator.remove();
                     }
                 }
             }
 
         }
-        expressionItems = expressionItems.stream().filter(expressionItem -> StringUtils.isNotBlank(expressionItem.getExpression())).collect(Collectors.toList());
+        expressionItems = cleanUpExpressionItems(expressionItems);
         savedLesson.setExpressionItems(expressionItems);
         return expressionItemRepository.save(expressionItems);
+    }
+
+    private List<ExpressionItem> cleanUpExpressionItems(List<ExpressionItem> expressionItems) {
+        expressionItems.forEach(expressionItem -> convertPhrasalVerbToExpressionIfPossible(expressionItem));
+        return expressionItems.stream()
+                .filter(expressionItem -> isNotBlank(expressionItem))
+                .collect(Collectors.toList());
+    }
+
+    private void convertPhrasalVerbToExpressionIfPossible(ExpressionItem expressionItem) {
+        if (expressionItem.getPhrasalVerbDetail() != null) {
+            expressionItem.setExpression(WordUtils.toString(expressionItem.getPhrasalVerbDetail().getWords()));
+        }
+    }
+
+    private boolean isNotBlank(ExpressionItem expressionItem) {
+        boolean result;
+        if (expressionItem.getType().equals(ExpressionType.PHRASAL_VERB)) {
+            boolean isWordsEmpty = true;
+            List<Word> words = expressionItem.getPhrasalVerbDetail().getWords();
+            for (Word word : words) {
+                if (StringUtils.isNotBlank(word.getValue())) {
+                    isWordsEmpty = false;
+                    break;
+                }
+            }
+            result = isWordsEmpty;
+        } else {
+            result = StringUtils.isNotBlank(expressionItem.getExpression());
+        }
+        return result;
     }
 
     public Lesson findById(String lessonId) {
