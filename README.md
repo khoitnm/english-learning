@@ -32,3 +32,9 @@ In the future, it should use OAuth2.
 
 # Database
 DB structure is still not good. However, as mentioned in Security, its main target is adding new features.
+
+# Project Improve (17/Feb/2017)
+After a while, I understand more clearly what I want, it will need much more complicated relationships between entities. 
+So MongoDB is not suitable anymore for the future. The GraphDB, particular Neo4j, will be a suitable solution no handle it.
+Besides that, I will redesign the entities structure of the whole project, all the business entities are going to be changed. 
+Therefore, this project is stopped here, it will be replaced by another project.
