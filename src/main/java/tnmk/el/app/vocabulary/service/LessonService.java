@@ -117,7 +117,7 @@ public class LessonService {
     private List<ExpressionItem> cleanUpExpressionItems(List<ExpressionItem> expressionItems) {
         expressionItems.forEach(expressionItem -> convertPhrasalVerbToExpressionIfPossible(expressionItem));
         return expressionItems.stream()
-                .filter(expressionItem -> isNotBlank(expressionItem))
+                .filter(expressionItem -> !isBlank(expressionItem))
                 .collect(Collectors.toList());
     }
 
@@ -127,7 +127,7 @@ public class LessonService {
         }
     }
 
-    private boolean isNotBlank(ExpressionItem expressionItem) {
+    private boolean isBlank(ExpressionItem expressionItem) {
         boolean result;
         if (expressionItem.getType().equals(ExpressionType.PHRASAL_VERB)) {
             boolean isWordsEmpty = true;
@@ -140,7 +140,7 @@ public class LessonService {
             }
             result = isWordsEmpty;
         } else {
-            result = StringUtils.isNotBlank(expressionItem.getExpression());
+            result = StringUtils.isBlank(expressionItem.getExpression());
         }
         return result;
     }

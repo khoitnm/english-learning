@@ -40,7 +40,6 @@
 <div class="ln_solid" style="margin: 10px 0px;"></div>
 <div class="row">
     <div class="col-md-12">
-        <!-- Topic -->
         <div class="x_panel">
             <div class="x_title">
                 <h2 style="width: 100%">
@@ -53,6 +52,7 @@
             <div class="x_content">
                 <div class="row">
                     <div class="col-lg-12">
+                        <!--Description-->
                         <div ng-show="!lessonEditService.editingNote && !lessonEditService.lesson.noteAsHtml"
                              ng-dblclick="lessonEditService.startEditingNote()"
                              class="well well-sm">
@@ -68,6 +68,7 @@
                             <br/>
                             <button class="btn btn-success" ng-click="lessonEditService.stopEditingNote()">Preview</button>
                         </div>
+                        <!--Expression Type-->
                         <div>
                             <label>Expression Type: </label>
 
@@ -80,7 +81,7 @@
                 <div class="row">
 
                     <div class="col-lg-11">
-
+                        <!--Topics-->
                         <div ng-repeat="topic in lessonEditService.lesson.topics track by $index"
                              class="col-md-2 wrap-dd-menu">
 
@@ -92,24 +93,6 @@
                             <datalist id="autocomplete_{{$index}}">
                                 <select ng-options="itopic as itopic.name for itopic in lessonEditService.topics track by itopic.name" ng-model="selected"></select>
                             </datalist>
-                            <!--Topic Name: {{topic.name}}-->
-                            <!--Autocomplete Selected Item: {{topic.autocompleteSelectedItem}}<br/>-->
-                            <!--Topic ID: {{topic.id}}-->
-                            <!--<angucomplete-alt-->
-                            <!--initial-value="topic.name"-->
-                            <!--local-data="lessonEditService.topics"-->
-                            <!--search-fields="name"-->
-                            <!--title-field="name"-->
-                            <!--minlength="1"-->
-
-
-                            <!--selected-object="lessonEditService.selectTopic"-->
-                            <!--input-changed="lessonEditService.changeTopicName"-->
-                            <!--override-suggestions="true"-->
-
-                            <!--pause="100"-->
-                            <!--match-class="highlight"-->
-                            <!--placeholder="type"/>-->
                         </div>
 
                     </div>
@@ -119,6 +102,10 @@
                 </div>
                 <div class="ln_solid"></div>
                 <!-- Expression Items Table -->
+                <div class="text-danger alert alert-danger"
+                     ng-show="userMessage">
+                    {{userMessage}}
+                </div>
                 <div class="table-responsive">
                     <table class="table-input-as-text">
                         <thead>

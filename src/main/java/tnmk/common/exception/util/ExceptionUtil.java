@@ -1,11 +1,17 @@
 package tnmk.common.exception.util;
 
+import org.springframework.core.NestedRuntimeException;
+
 /**
  * @author khoi.tran on 12/8/16.
  */
 public class ExceptionUtil {
     public static String getDataExceptionRoot(Exception exception) {
-        return getErrorLine(exception, 0);
+        if (exception instanceof NestedRuntimeException) {
+            NestedRuntimeException nestedRuntimeException = (NestedRuntimeException) exception;
+            return nestedRuntimeException.getRootCause().getMessage();
+        }
+        return exception.getCause().getMessage();
     }
 
     public static String getNullPointerExceptionRoot(Exception exception) {

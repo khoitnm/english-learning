@@ -6,18 +6,24 @@ After that, he can test his vocabularies. The test will show some explanations a
 The user will get a score for each words, the words with the most failure answers will be more likely to appear in later tests.
 
 # Run project
-Build: 
+Build:
+````
 cd resource/static/
 npm install
 
 cd ../..
 mvn clean install -DskipTests
+````
 
 Deploy:
+````
 cp target/english-learning.war {TOMCAT_HOME}/webapp/
+````
 
 MongoDB server start:
+````
 mongod -port 27117
+````
 
 # Security
 The current main target is features implementation, the security will be improve later.

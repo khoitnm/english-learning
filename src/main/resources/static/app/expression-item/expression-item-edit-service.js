@@ -115,9 +115,7 @@ LessonEditService.prototype.addTopic = function () {
 };
 LessonEditService.prototype.addExpressionItem = function () {
     var self = this;
-
-    var expressionItem = angular.copy(self.expressionItemInit);
-    self.lesson.expressionItems.push(expressionItem);
+    self.lesson.expressionItems.push(self.constructNewExpressionItem());
 };
 LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionItem) {
     var self = this;
@@ -128,6 +126,19 @@ LessonEditService.prototype.addExpressionItemIfNecessary = function (expressionI
         if (index == self.lesson.expressionItems.length - 1) {
             self.addExpressionItem();
         }
+    }
+};
+LessonEditService.prototype.addExpressionItemIfNecessaryForLesson = function (lesson) {
+    var self = this;
+    var expression = null;
+    var expressions = lesson.expressionItems;
+    if (expressions.length > 0) {
+        expression = expressions[expressions.length - 1];
+    }
+    if (!hasValue(expression)) {
+        self.addExpressionItem();
+    } else {
+        self.addExpressionItemIfNecessary(expression);
     }
 };
 LessonEditService.prototype.translateExpressionItem = function (expressionItem) {
@@ -390,7 +401,9 @@ LessonEditService.prototype.selectExpressionType = function () {
         function (successResponse) {
             self.setExpressionItemInit(successResponse.data);
             self.cleanLesson(self.lesson);
+            self.addExpressionItemIfNecessaryForLesson(self.lesson);
             var expressionItems = self.lesson.expressionItems;
+            //TODO add expression if possible
             if (isBlank(self.lesson.id) && (!hasValue(expressionItems) || expressionItems.length == 0)) {
                 self.lesson.expressionItems = [self.constructNewExpressionItem()];
             }
