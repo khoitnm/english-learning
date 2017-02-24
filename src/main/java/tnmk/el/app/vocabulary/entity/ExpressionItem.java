@@ -49,7 +49,6 @@ public class ExpressionItem extends BaseEntity {
 
     private Set<String> irregularVerbs;
 
-    @Indexed
     private Set<String> pluralNouns;
 
     public ExpressionItem() {

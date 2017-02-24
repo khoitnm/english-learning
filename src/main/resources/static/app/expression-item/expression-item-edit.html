@@ -136,7 +136,7 @@
                                        ng-class="lessonEditService.isShowExpression ? '': 'transparent'"
                                        ng-model="expressionItem.expression"
                                        ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
-                                       ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
+                                       ng-focus="lessonEditService.selectExpressionItemHeadword(expressionItem)"
                                        ng-blur="lessonEditService.translateExpressionItem(expressionItem)"
                                        placeholder="expression {{$index + 1}}" class="cell-input expression"/>
 
@@ -147,13 +147,13 @@
                                     <input type="text"
                                            ng-model="word.value"
                                            ng-change="lessonEditService.changePhrasalVerb(expressionItem)"
-                                           ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
+                                           ng-focus="lessonEditService.selectExpressionItemHeadword(expressionItem)"
                                            ng-blur="lessonEditService.translateExpressionItem(expressionItem)"
                                            placeholder="phrasal verb {{$index + 1}}" class="cell-input expression"/>
                                     <input type="text"
                                            ng-model="word.type"
                                            ng-change="lessonEditService.addExpressionItemIfNecessary(expressionItem)"
-                                           ng-focus="lessonEditService.focusExpressionItem(expressionItem)"
+                                           ng-focus="lessonEditService.selectExpressionItemHeadword(expressionItem)"
                                            ng-blur="lessonEditService.translateExpressionItem(expressionItem)"
                                            placeholder="word type {{$index + 1}}" class="cell-input expression-type"/>
 
@@ -191,7 +191,7 @@
                                                       rows="{{meaning.explanationLinesLength || 1}}"
                                                       ng-model="meaning.explanation"
                                                       ng-change="lessonEditService.changeExpressionMeaning(this,expressionItem, meaning)"
-                                                      ng-focus="lessonEditService.changeExpressionMeaning(this,expressionItem, meaning)"
+                                                      ng-focus="lessonEditService.selectExpressionItemMeaning(this,expressionItem, meaning)"
                                                       ng-trim="true"
                                                       placeholder="explanation {{$index + 1}}"></textarea>
                                             <!-- Examples -->

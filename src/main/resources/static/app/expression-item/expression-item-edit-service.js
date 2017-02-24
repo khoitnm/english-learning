@@ -141,7 +141,21 @@ LessonEditService.prototype.addExpressionItemIfNecessaryForLesson = function (le
         self.addExpressionItemIfNecessary(expression);
     }
 };
-LessonEditService.prototype.translateExpressionItem = function (expressionItem) {
+LessonEditService.prototype.selectExpressionItemHeadword = function (expressionItem) {
+    var self = this;
+    self.focusExpressionItem(expressionItem, function () {
+        if (isNotBlank(expressionItem.expression)) {
+            self.playSound(expressionItem);
+        }
+    });
+};
+LessonEditService.prototype.selectExpressionItemMeaning = function ($event, expressionItem, meaning) {
+    var self = this;
+    self.changeExpressionMeaning($event, expressionItem, meaning, function () {
+        self.playSound(expressionItem);
+    });
+};
+LessonEditService.prototype.translateExpressionItem = function (expressionItem, callback) {
     var self = this;
     var meaning = expressionItem.meanings[0];
     if (isNotBlank(expressionItem.expression) && isBlank(meaning.explanation)) {
@@ -152,7 +166,29 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem) 
                 var translated = successResponse.data;
                 meaning.explanation = translated.translatedText;
             }
+            callback.call(self);
         });
+    } else {
+        callback.call(self);
+    }
+};
+LessonEditService.prototype.translateExpressionItem = function (expressionItem, callback) {
+    var self = this;
+    var meaning = expressionItem.meanings[0];
+    if (isNotBlank(expressionItem.expression) && isBlank(meaning.explanation)) {
+        var translation = new Translation(self.sourceLanguage, self.destLanguage, expressionItem.expression);
+        self.$http.post(contextPath + "/api/dictionary/words/meanings", translation).then(function (successResponse) {
+            //have to recheck empty again to avoid that the user input something when ajax request was called.
+            self.cleanMeanings(expressionItem.meanings);
+            var dictionaryMeanings = successResponse.data;
+            for (var i = 0; i < dictionaryMeanings.length; i++) {
+                var dictionaryMeaning = dictionaryMeanings[i];
+                expressionItem.meanings.push(dictionaryMeaning);
+            }
+            callback.call(self);
+        });
+    } else {
+        callback.call(self);
     }
 };
 LessonEditService.prototype.changePhrasalVerb = function (expressionItem) {
@@ -196,7 +232,7 @@ LessonEditService.prototype.addExpressionMeaning = function (expressionItem) {
     var meaning = angular.copy(self.meaningInit);
     expressionItem.meanings.push(meaning);
 };
-LessonEditService.prototype.focusExpressionItem = function (expressionItem) {
+LessonEditService.prototype.focusExpressionItem = function (expressionItem, callback) {
     var self = this;
     if (expressionItem.type == "phrasal verb") {
         var phrasalVerbDetail = expressionItem.phrasalVerbDetail;
@@ -211,6 +247,7 @@ LessonEditService.prototype.focusExpressionItem = function (expressionItem) {
         self.addExpressionMeaning(expressionItem);
     }
     self.addExpressionItemIfNecessary(expressionItem);
+    callback.call(self);
 };
 LessonEditService.prototype.addExpressionMeaningIfNecessary = function (expressionItem, meaning) {
     var self = this;
@@ -227,7 +264,7 @@ LessonEditService.prototype.addExpressionMeaningIfNecessary = function (expressi
         }
     }
 };
-LessonEditService.prototype.changeExpressionMeaning = function ($event, expressionItem, meaning) {
+LessonEditService.prototype.changeExpressionMeaning = function ($event, expressionItem, meaning, callback) {
     var self = this;
     var explanation = meaning.explanation;
     if (hasValue(explanation)) {
@@ -235,6 +272,7 @@ LessonEditService.prototype.changeExpressionMeaning = function ($event, expressi
     }
     self.addExpressionMeaningQuestionIfNecessary(meaning);
     self.addExpressionMeaningIfNecessary(expressionItem, meaning);
+    callback.call(self);
 };
 LessonEditService.prototype.addExpressionMeaningQuestionIfNecessary = function (meaning) {
     var self = this;
@@ -392,8 +430,10 @@ LessonEditService.prototype.cleanMeaningExamples = function (examples) {
     }
 };
 LessonEditService.prototype.playSound = function (expressionItem) {
-    var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
-    audio.play();
+    if (isNotBlank(expressionItem.expression)) {
+        var audio = new Audio(contextPath + '/api/tts?text=' + expressionItem.expression);
+        audio.play();
+    }
 };
 LessonEditService.prototype.selectExpressionType = function () {
     var self = this;

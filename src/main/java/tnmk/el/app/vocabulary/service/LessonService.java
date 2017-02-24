@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tnmk.common.infrastructure.validator.BeanValidator;
 import tnmk.el.app.vocabulary.entity.ExpressionItem;
@@ -81,7 +82,7 @@ public class LessonService {
     private Lesson presaveLessonCover(Lesson lesson) {
         Lesson savedLesson = lesson;
         List<ExpressionItem> expressionItems = lesson.getExpressionItems();
-        if (StringUtils.isBlank(lesson.getId())) {
+        if (StringUtils.isBlank(lesson.getOxfordWordId())) {
             //Temporary remove expressions so that it able to save the lesson (because expressionItems don't have id yet).
             lesson.setExpressionItems(Collections.emptyList());
             savedLesson = lessonRepository.save(lesson);
@@ -94,8 +95,8 @@ public class LessonService {
         List<ExpressionItem> expressionItems = savedLesson.getExpressionItems();
         for (ExpressionItem expressionItem : expressionItems) {
             expressionItem.addBookId(savedLesson.getBookId());
-            expressionItem.addLessonId(savedLesson.getId());
-            Set<String> topicIds = savedLesson.getTopics().stream().map(topic -> topic.getId()).collect(Collectors.toSet());
+            expressionItem.addLessonId(savedLesson.getOxfordWordId());
+            Set<String> topicIds = savedLesson.getTopics().stream().map(topic -> topic.getOxfordWordId()).collect(Collectors.toSet());
             expressionItem.addTopicIds(topicIds);
             if (expressionItem.getType().equals(ExpressionType.PHRASAL_VERB)) {
                 List<Word> words = expressionItem.getPhrasalVerbDetail().getWords();
@@ -146,7 +147,11 @@ public class LessonService {
     }
 
     public Lesson findById(String lessonId) {
-        return lessonRepository.findOne(lessonId);
+        Lesson lesson = lessonRepository.findOneExcludeExpressions(lessonId);
+        Sort sort = new Sort(Sort.Direction.ASC, "expression");
+        List<ExpressionItem> expressionItems = expressionItemRepository.findByLessonIdsIn(lessonId, sort);
+        lesson.setExpressionItems(expressionItems);
+        return lesson;
     }
 
     public List<LessonIntroduction> findAllIntroductions() {

@@ -31,7 +31,7 @@ public class ExpressionItemUserPointsRepository {
     public int updateUserPoints(String userId, List<ExpressionItem> expressionItems) {
         List<Pair<Query, Update>> updateOps = new ArrayList<>();
         for (ExpressionItem expressionItem : expressionItems) {
-            Query query = createQueryById(expressionItem.getId());
+            Query query = createQueryById(expressionItem.getOxfordWordId());
             UserPoint userPoint = expressionItem.getUserPoints().getUserPoint(userId);
             DBObject dbObject = toDBObject(userPoint);
             Update update = Update.update("userPoints." + userId, dbObject);
