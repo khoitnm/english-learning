@@ -209,7 +209,7 @@
                                             <div class="plain-text"><span>{{meaning.explanation}}</span></div>
 
                                             <table style="width: 100%" ng-show="expressionItem.answerResult">
-                                                <tr ng-repeat="example in meaning.examples  track by $index">
+                                                <tr ng-repeat="example in meaning.examples track by $index" ng-if="$index < 5">
                                                     <td style="width: 35px"><label class="example {{meaning.explanation? 'active-meaning': 'inactive-meaning'}}  {{example? 'active-example': 'inactive-example'}}" ng-show="$index == 0">e.g. </label></td>
                                                     <td>
                                                         <div class="plain-text">{{example}}</div>
