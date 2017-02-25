@@ -35,7 +35,7 @@ public class TtsItemService {
 
         FileItem oldFileItem = ttsItem.getFileItem();
         if (oldFileItem != null) {
-            fileItemService.remove(oldFileItem.getOxfordWordId());
+            fileItemService.remove(oldFileItem.getId());
         }
 
         FileItem newFileItem = fileItemService.save(text + "_" + sourceLanguage + ".mp3", MIMETYPE_MP3, mp3Data);

@@ -29,11 +29,11 @@ public class BaseEntity {
         this.updatedDateTime = updatedDateTime;
     }
 
-    public String getOxfordWordId() {
+    public String getId() {
         return id;
     }
 
-    public void setOxfordWordId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

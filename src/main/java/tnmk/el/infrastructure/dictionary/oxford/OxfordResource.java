@@ -1,5 +1,6 @@
 package tnmk.el.infrastructure.dictionary.oxford;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import tnmk.el.app.common.entity.UriPrefixConstants;
 import tnmk.el.app.vocabulary.entity.Meaning;
 import tnmk.el.infrastructure.dictionary.oxford.entity.OxfordWord;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -21,19 +23,22 @@ public class OxfordResource {
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/dictionary/words", method = RequestMethod.POST)
     public OxfordWord lookUp(@RequestBody ExpressionLookUpRequest expressionLookUpRequest) {
-        return oxfordService.lookUp(expressionLookUpRequest.getSrcLanguage(), expressionLookUpRequest.getSourceText());
+        return oxfordService.lookUpDefinition(expressionLookUpRequest.getSrcLanguage(), expressionLookUpRequest.getSourceText());
     }
 
     @RequestMapping(value = UriPrefixConstants.API_PREFIX + "/dictionary/words/meanings", method = RequestMethod.POST)
-    public List<Meaning> lookUpMeanings(@RequestBody ExpressionLookUpRequest expressionLookUpRequest) {
+    public List<Meaning> lookUpMeanings(@RequestBody @Valid ExpressionLookUpRequest expressionLookUpRequest) {
         OxfordWord oxfordWord = lookUp(expressionLookUpRequest);
         List<Meaning> meanings = OxfordMapper.toMeanings(oxfordWord);
         return meanings;
     }
 
     public static class ExpressionLookUpRequest {
+        @NotBlank
         private String sourceText;
-        private String srcLanguage;
+        @NotBlank
+        private String srcLanguage = "en";
+        @NotBlank
         private String destLanguage = "en";
 
         public String getSourceText() {

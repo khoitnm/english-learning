@@ -166,10 +166,10 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem, 
                 var translated = successResponse.data;
                 meaning.explanation = translated.translatedText;
             }
-            callback.call(self);
+            if (callback) callback.call(self);
         });
     } else {
-        callback.call(self);
+        if (callback) callback.call(self);
     }
 };
 LessonEditService.prototype.translateExpressionItem = function (expressionItem, callback) {
@@ -185,10 +185,11 @@ LessonEditService.prototype.translateExpressionItem = function (expressionItem, 
                 var dictionaryMeaning = dictionaryMeanings[i];
                 expressionItem.meanings.push(dictionaryMeaning);
             }
-            callback.call(self);
+            if (callback) callback.call(self);
+
         });
     } else {
-        callback.call(self);
+        if (callback) callback.call(self);
     }
 };
 LessonEditService.prototype.changePhrasalVerb = function (expressionItem) {

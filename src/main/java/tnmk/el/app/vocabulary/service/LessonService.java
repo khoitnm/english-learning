@@ -82,7 +82,7 @@ public class LessonService {
     private Lesson presaveLessonCover(Lesson lesson) {
         Lesson savedLesson = lesson;
         List<ExpressionItem> expressionItems = lesson.getExpressionItems();
-        if (StringUtils.isBlank(lesson.getOxfordWordId())) {
+        if (StringUtils.isBlank(lesson.getId())) {
             //Temporary remove expressions so that it able to save the lesson (because expressionItems don't have id yet).
             lesson.setExpressionItems(Collections.emptyList());
             savedLesson = lessonRepository.save(lesson);
@@ -95,8 +95,8 @@ public class LessonService {
         List<ExpressionItem> expressionItems = savedLesson.getExpressionItems();
         for (ExpressionItem expressionItem : expressionItems) {
             expressionItem.addBookId(savedLesson.getBookId());
-            expressionItem.addLessonId(savedLesson.getOxfordWordId());
-            Set<String> topicIds = savedLesson.getTopics().stream().map(topic -> topic.getOxfordWordId()).collect(Collectors.toSet());
+            expressionItem.addLessonId(savedLesson.getId());
+            Set<String> topicIds = savedLesson.getTopics().stream().map(topic -> topic.getId()).collect(Collectors.toSet());
             expressionItem.addTopicIds(topicIds);
             if (expressionItem.getType().equals(ExpressionType.PHRASAL_VERB)) {
                 List<Word> words = expressionItem.getPhrasalVerbDetail().getWords();

@@ -7,6 +7,7 @@ import tnmk.el.infrastructure.dictionary.oxford.entity.Entry;
 import tnmk.el.infrastructure.dictionary.oxford.entity.LexicalEntry;
 import tnmk.el.infrastructure.dictionary.oxford.entity.OxfordWord;
 import tnmk.el.infrastructure.dictionary.oxford.entity.Sense;
+import tnmk.el.infrastructure.dictionary.oxford.entity.Sentence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class OxfordMapper {
     public static List<Meaning> toMeanings(LexicalEntry lexicalEntry) {
         List<Meaning> result = new ArrayList<>();
         WordType wordType = convertLexicalCateogryToWordType(lexicalEntry.getLexicalCategory());
-
+        List<Sentence> exampleSentences = lexicalEntry.getSentences();
         for (Entry entry : lexicalEntry.getEntries()) {
             List<Sense> senses = entry.getSenses();
             for (Sense sense : senses) {
@@ -38,8 +39,17 @@ public class OxfordMapper {
                 Meaning meaning = new Meaning();
                 meaning.setWordType(wordType);
                 meaning.setExplanation(explanation);
-                List<String> examples = sense.getExamples().stream().map(example -> example.getText()).collect(Collectors.toList());
+                List<String> examples = new ArrayList<>();
+                if (sense.getExamples() != null) {
+                    examples = sense.getExamples().stream().map(example -> example.getText()).collect(Collectors.toList());
+                }
                 meaning.setExamples(examples);
+
+                for (Sentence exampleSentence : exampleSentences) {
+                    if (exampleSentence.getSenseIds().contains(sense.getId())) {
+                        examples.add(exampleSentence.getText());
+                    }
+                }
 
                 result.add(meaning);
             }
@@ -58,6 +68,9 @@ public class OxfordMapper {
             break;
         case "verb":
             wordType = WordType.VERB;
+            break;
+        case "noun":
+            wordType = WordType.NOUN;
             break;
         case "preposition":
             wordType = WordType.PREPOSITION;

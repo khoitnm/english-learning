@@ -27,14 +27,6 @@ public class OxfordWord extends BaseEntity {
     @Valid
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public String getOxfordWordId() {
-        return oxfordWordId;
-    }
-
-    public void setOxfordWordId(String oxfordWordId) {
-        this.oxfordWordId = oxfordWordId;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -75,4 +67,11 @@ public class OxfordWord extends BaseEntity {
         this.additionalProperties.put(name, value);
     }
 
+    public String getOxfordWordId() {
+        return oxfordWordId;
+    }
+
+    public void setOxfordWordId(String oxfordWordId) {
+        this.oxfordWordId = oxfordWordId;
+    }
 }
